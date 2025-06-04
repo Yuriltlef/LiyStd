@@ -1,8 +1,0 @@
-[
-{
-  "directory": "D:/C_CPP_Projects/LiyStd/build",
-  "command": "D:\\w64devkit\\bin\\g++.exe -ID:/C_CPP_Projects/LiyStd/lib/include/LiyStdArrays -ID:/C_CPP_Projects/LiyStd/lib/include/LiyStdGraphs -ID:/C_CPP_Projects/LiyStd/lib/include/LiyStdSets -ID:/C_CPP_Projects/LiyStd/app/include -g -std=gnu++17 -o app\\CMakeFiles\\LiyStdApp.dir\\main.cpp.obj -c D:\\C_CPP_Projects\\LiyStd\\app\\main.cpp",
-  "file": "D:\\C_CPP_Projects\\LiyStd\\app\\main.cpp",
-  "output": "app\\CMakeFiles\\LiyStdApp.dir\\main.cpp.obj"
-}
-]
