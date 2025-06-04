@@ -1,0 +1,13 @@
+D:/C_CPP_Projects/LiyStd/build/CMakeFiles/edit_cache.dir
+D:/C_CPP_Projects/LiyStd/build/CMakeFiles/rebuild_cache.dir
+D:/C_CPP_Projects/LiyStd/build/CMakeFiles/list_install_components.dir
+D:/C_CPP_Projects/LiyStd/build/CMakeFiles/install.dir
+D:/C_CPP_Projects/LiyStd/build/CMakeFiles/install/local.dir
+D:/C_CPP_Projects/LiyStd/build/CMakeFiles/install/strip.dir
+D:/C_CPP_Projects/LiyStd/build/app/CMakeFiles/LiyStdApp.dir
+D:/C_CPP_Projects/LiyStd/build/app/CMakeFiles/edit_cache.dir
+D:/C_CPP_Projects/LiyStd/build/app/CMakeFiles/rebuild_cache.dir
+D:/C_CPP_Projects/LiyStd/build/app/CMakeFiles/list_install_components.dir
+D:/C_CPP_Projects/LiyStd/build/app/CMakeFiles/install.dir
+D:/C_CPP_Projects/LiyStd/build/app/CMakeFiles/install/local.dir
+D:/C_CPP_Projects/LiyStd/build/app/CMakeFiles/install/strip.dir

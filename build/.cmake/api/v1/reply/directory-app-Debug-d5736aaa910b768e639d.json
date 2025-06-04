@@ -1,0 +1,56 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"install"
+		],
+		"files" : 
+		[
+			"app/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 21,
+				"parent" : 0
+			}
+		]
+	},
+	"installers" : 
+	[
+		{
+			"backtrace" : 1,
+			"component" : "Unspecified",
+			"destination" : "D:/C_CPP_Projects/LiyStd/app/bin",
+			"paths" : 
+			[
+				"app/LiyStdApp.exe"
+			],
+			"targetId" : "LiyStdApp::@5f5a17c01335469806cb",
+			"targetIndex" : 0,
+			"type" : "target"
+		},
+		{
+			"backtrace" : 1,
+			"component" : "Unspecified",
+			"cxxModuleBmiTarget" : 
+			{
+				"id" : "LiyStdApp::@5f5a17c01335469806cb",
+				"index" : 0
+			},
+			"destination" : "D:/C_CPP_Projects/LiyStd/app/bin",
+			"type" : "cxxModuleBmi"
+		}
+	],
+	"paths" : 
+	{
+		"build" : "app",
+		"source" : "app"
+	}
+}
