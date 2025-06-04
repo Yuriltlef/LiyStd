@@ -15,8 +15,13 @@ project(
     LANGUAGES CXX
 )
 
+set(LIYSTD_LICENSE "LGPL-3.0" CACHE STRING "Library license type")
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_subdirectory(app)
+add_subdirectory(lib)
+add_subdirectory(tests/Arrays)
+add_subdirectory(tests/Graphs)
+add_subdirectory(tests/Sets)
