@@ -1,5 +1,5 @@
 /**
- * SPDX-License-Identifiter: LGPL-3.0-only.
+ * SPDX-License-Identifier: LGPL-3.0-only.
  * @file LinearList.hpp
  * @author Yurilt (yurilt15312@outlook.com)
  * @brief 这是LiyStd库的一部分,遵循 LGPLv3协议.
@@ -12,18 +12,13 @@
 /* includes-------------------------------------------- */
 #include <iostream>
 #include <cstdint>
+#include "liyConfing.hpp"
 /* ---------------------------------------------------- */
 
 #ifndef LIY_LINEAR_LIST
 #define LIY_LINEAR_LIST
 
 namespace LiyStd {
-    using _LiyIndexType = std::size_t;
-    using _LiySizeType = std::size_t;
-
-    static_assert(
-        sizeof(_LiyIndexType) * CHAR_BIT >= 64,
-        "Requires 64-bit unsigned int type!");
 
     /**
      * @brief 要实现的目标：线性表的抽象类。
@@ -52,7 +47,14 @@ namespace LiyStd {
          * @param theIndex
          * @return T&
          */
-        virtual T &at(_LiyIndexType theIndex) const = 0;
+        virtual const T& at(_LiyIndexType theIndex) const = 0;
+
+        /**
+         * @brief 这是LiyStd库的一部分,遵循 LGPLv3协议.
+         * @param theIndex
+         * @return T&
+         */
+        virtual T& at(_LiyIndexType theIndex) = 0;
 
         /**
          * @brief 这是LiyStd库的一部分,遵循 LGPLv3协议.
@@ -86,5 +88,5 @@ namespace LiyStd {
 
         static constexpr _LiyIndexType npos = static_cast<_LiyIndexType>(-1); // 无效引索
     };
-};
+}
 #endif // LIY_LINEAR_LIST

@@ -21,20 +21,22 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 #接口库
-add_library(liy_common_includes INTERFACE)
-target_include_directories(liy_common_includes INTERFACE 
+set(liy_lib_includes 
     "${PROJECT_SOURCE_DIR}/lib/include/LiyStdArrays"
     "${PROJECT_SOURCE_DIR}/lib/include/LiyStdGraphs"
     "${PROJECT_SOURCE_DIR}/lib/include/LiyStdSets"
-    "${PROJECT_SOURCE_DIR}/app/include        "
+    "${PROJECT_SOURCE_DIR}/lib/include"
 )
-target_sources(liy_common_includes INTERFACE
-    "${PROJECT_SOURCE_DIR}/lib/src/LiyStdArrays"
-    "${PROJECT_SOURCE_DIR}/lib/src/LiyStdGraphs"
-    "${PROJECT_SOURCE_DIR}/lib/src/LiyStdSets"
+#对象库，包含库的所有源文件
+set(liy_lib_sources 
+    "${PROJECT_SOURCE_DIR}/lib/src/LiyStdArrays/ArrayList.cpp"
 )
+add_library(liy_common_includes INTERFACE)  #接口库
+add_library(liy_common_sources OBJECT ${liy_lib_sources})   #对象库
+target_include_directories(liy_common_includes INTERFACE ${liy_lib_includes})
+target_include_directories(liy_common_sources PRIVATE ${liy_lib_includes})
 set(LIY_COMMON_INCLUDES liy_common_includes)
-
+set(LIY_COMMON_SOURCES liy_common_sources)
 #手动添加子模块
 add_subdirectory(app)
 add_subdirectory(lib)
