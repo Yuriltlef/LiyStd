@@ -1,4 +1,4 @@
-/**
+﻿/**
  * SPDX-License-Identifier: LGPL-3.0-only.
  * @file LinearList.hpp
  * @author Yurilt (yurilt15312@outlook.com)
@@ -9,9 +9,11 @@
  * @copyright Copyright (c) 2025, Yurilt.
  *
  */
+#pragma once
 /* includes-------------------------------------------- */
 #include <iostream>
 #include <cstdint>
+
 #include "liyConfing.hpp"
 /* ---------------------------------------------------- */
 
@@ -34,34 +36,34 @@ namespace LiyStd {
          * @return true
          * @return false
          */
-        virtual bool isEmpty() const = 0;
+        LI_NODISCARD virtual bool isEmpty() const = 0;
 
         /**
          * @brief 这是LiyStd库的一部分,遵循 LGPLv3协议. Get the Size object
          * @return _LiySizeType
          */
-        virtual _LiySizeType size() const = 0;
+        LI_NODISCARD virtual LiySizeType size() const = 0;
 
         /**
          * @brief 这是LiyStd库的一部分,遵循 LGPLv3协议.
          * @param theIndex
          * @return T&
          */
-        virtual const T& at(_LiyIndexType theIndex) const = 0;
+        virtual const T& at(LiyIndexType theIndex) const = 0;
 
         /**
          * @brief 这是LiyStd库的一部分,遵循 LGPLv3协议.
          * @param theIndex
          * @return T&
          */
-        virtual T& at(_LiyIndexType theIndex) = 0;
+        virtual T& at(LiyIndexType theIndex) = 0;
 
         /**
          * @brief 这是LiyStd库的一部分,遵循 LGPLv3协议.
          * @param theElement
          * @return _LiyIndexType
          */
-        virtual _LiyIndexType find(const T &theElement) const = 0;
+        virtual LiyIndexType find(const T &theElement) const = 0;
 
         /**
          * @brief 这是LiyStd库的一部分,遵循 LGPLv3协议.
@@ -69,7 +71,7 @@ namespace LiyStd {
          * @return true
          * @return false
          */
-        virtual bool remove(_LiyIndexType theIndex) noexcept = 0;
+        virtual bool remove(LiyIndexType theIndex) noexcept = 0;
 
         /**
          * @brief 这是LiyStd库的一部分,遵循 LGPLv3协议.
@@ -78,7 +80,7 @@ namespace LiyStd {
          * @return true
          * @return false
          */
-        virtual bool insert(_LiyIndexType theIndex, const T &theElement) noexcept = 0;
+        virtual bool insert(LiyIndexType theIndex, const T &theElement) noexcept = 0;
 
         /**
          * @brief 这是LiyStd库的一部分,遵循 LGPLv3协议.
@@ -86,7 +88,7 @@ namespace LiyStd {
          */
         virtual void print(std::ostream &out) const = 0;
 
-        static constexpr _LiyIndexType npos = static_cast<_LiyIndexType>(-1); // 无效引索
+        static constexpr LiyIndexType npos = static_cast<LiyIndexType>(-1); // 无效引索
     };
 }
 #endif // LIY_LINEAR_LIST

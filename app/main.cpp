@@ -16,5 +16,5 @@
 /* ---------------------------------------------------- */
 
 int main() {
-    std::cout << LiyStd::LinearList<int>::npos;
+    std::cout << (long) LiyStd::LinearList<int>::npos;
 }

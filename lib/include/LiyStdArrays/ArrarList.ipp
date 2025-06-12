@@ -1,4 +1,4 @@
-/**
+﻿/**
  * SPDX-License-Identifier: LGPL-3.0-only.
  * @file ArrarList.ipp
  * @author Yurilt (yurilt15312@outlook.com)
@@ -9,10 +9,14 @@
  * @copyright Copyright (c) 2025
  * 
  */
+#pragma once
 /* includes-------------------------------------------- */
 #include <sstream>
+#include <cstdint>
+#include <iomanip>
 
-#include "ArrayList.hpp"
+#include "liyConfing.hpp"
+#include "liyUtil.hpp"
 /* ---------------------------------------------------- */
 #ifndef LIY_ARRAY_LIST_IPP
 #define LIY_ARRAY_LIST_IPP
@@ -21,13 +25,17 @@
 /**
  * @brief 创建空顺序表，容量为capacity
  * @tparam T 类型参数
- * @param capacity 容量
+ * @param _capacity 容量
  */
 template<typename T>
-LiyStd::ArrayList<T>::ArrayList(_LiySizeType _capacity) : capacity(_capacity), length(0) {
+LiyStd::ArrayList<T>::ArrayList(const LiySizeType _capacity) : capacity(_capacity) {
     /* 容量必须大于零 */
     if (_capacity < 1) throw std::invalid_argument("capacity must > 0.");
     elements = new T[_capacity];
+}
+
+template<typename T>
+LiyStd::ArrayList<T>::ArrayList(const ArrayList<T> &arrayList): elements(new T[arrayList.capacity()]) {
 }
 
 /**
@@ -36,12 +44,14 @@ LiyStd::ArrayList<T>::ArrayList(_LiySizeType _capacity) : capacity(_capacity), l
  * @param theIndex 引索
  */
 template<typename T>
-inline void LiyStd::ArrayList<T>::checkIndex(_LiyIndexType theIndex) const {
+inline void LiyStd::ArrayList<T>::checkIndex(const LiyIndexType theIndex) const {
     /* 检查是否小于零或超过容量 */
-    if (theIndex < 0 || theIndex >= capacity) {
+    if (theIndex >= length) {
         std::ostringstream _s;
-        _s << "index out of bounds: capacity is " << capacity << " but index is " << theIndex;
-        throw std::out_of_range(_s.str());
+        _s  << "index out of bounds\n caused by "
+            << typeid(*this).name() << " at " << "0x" << std::hex << reinterpret_cast<std::uintptr_t>(this)
+            << std::setfill('0')  << std::dec << ": length is " << length << " but the index is " << theIndex;
+        throw LiyStd::OutOfRangeException(_s.str().c_str());
     }
 }
 
@@ -60,7 +70,7 @@ bool LiyStd::ArrayList<T>::isEmpty() const {
  * @return _LiySizeType 顺序表长度
  */
 template<typename T>
-LiyStd::_LiySizeType LiyStd::ArrayList<T>::size() const {
+LiyStd::LiySizeType LiyStd::ArrayList<T>::size() const {
     return length;
 }
 
@@ -70,7 +80,7 @@ LiyStd::_LiySizeType LiyStd::ArrayList<T>::size() const {
  * @return T&
  */
 template<typename T>
-const T& LiyStd::ArrayList<T>::at(LiyStd::_LiyIndexType theIndex) const { 
+const T& LiyStd::ArrayList<T>::at(LiyStd::LiyIndexType theIndex) const {
     /* 检查范围 */
     checkIndex(theIndex);
     return elements[theIndex]; 
@@ -82,7 +92,7 @@ const T& LiyStd::ArrayList<T>::at(LiyStd::_LiyIndexType theIndex) const {
  * @return T&
  */
 template<typename T>
-T& LiyStd::ArrayList<T>::at(LiyStd::_LiyIndexType theIndex) { 
+T& LiyStd::ArrayList<T>::at(LiyStd::LiyIndexType theIndex) {
     /* 检查范围 */
     checkIndex(theIndex);
     return elements[theIndex]; 
@@ -94,7 +104,7 @@ T& LiyStd::ArrayList<T>::at(LiyStd::_LiyIndexType theIndex) {
  * @return _LiyIndexType
  */
 template<typename T>
-LiyStd::_LiyIndexType LiyStd::ArrayList<T>::find(const T &theElement) const {
+LiyStd::LiyIndexType LiyStd::ArrayList<T>::find(const T &theElement) const {
     return 0;
 }
 
@@ -105,7 +115,7 @@ LiyStd::_LiyIndexType LiyStd::ArrayList<T>::find(const T &theElement) const {
  * @return false
  */
 template<typename T>
-bool LiyStd::ArrayList<T>::remove(_LiyIndexType theIndex) noexcept {
+bool LiyStd::ArrayList<T>::remove(LiyIndexType theIndex) noexcept {
     return false;
 }
 
@@ -117,7 +127,7 @@ bool LiyStd::ArrayList<T>::remove(_LiyIndexType theIndex) noexcept {
  * @return false
  */
 template<typename T>
-bool LiyStd::ArrayList<T>::insert(_LiyIndexType theIndex, const T &theElement) noexcept {
+bool LiyStd::ArrayList<T>::insert(LiyIndexType theIndex, const T &theElement) noexcept {
     return false;
 }
 

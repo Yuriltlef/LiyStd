@@ -11,8 +11,16 @@
  */
 #include "Arraylist.hpp"
 
+
 int main() {
-    LiyStd::LinearList<int>* list1 = new LiyStd::ArrayList<int>(21);
-    std::cout << typeid(LiyStd::ArrayList<int>).name() << '\n' << list1->size();
-    auto a = list1->at(20);
+    LiyStd::LinearList<int>* list1 = new LiyStd::ArrayList<int>(20000);
+    std::cout << typeid(LiyStd::ArrayList<int>).name() << '\n';
+    int a = 0;
+    try {
+        a = list1->at(20);
+    } catch (LiyStd::OutOfRangeException& e) {
+        std::cout << e.what();
+        throw;
+    }
+    std::cout << '\n' << a << '\n';
 }

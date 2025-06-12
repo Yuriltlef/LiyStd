@@ -30,6 +30,7 @@ set(liy_lib_includes
 #对象库，包含库的所有源文件
 set(liy_lib_sources 
     "${PROJECT_SOURCE_DIR}/lib/src/LiyStdArrays/ArrayList.cpp"
+        lib/src/liyUtil.cpp
 )
 add_library(liy_common_includes INTERFACE)  #接口库
 add_library(liy_common_sources OBJECT ${liy_lib_sources})   #对象库

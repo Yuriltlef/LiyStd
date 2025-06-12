@@ -9,10 +9,27 @@
  * @copyright Copyright (c) 2025
  * 
  */
+#pragma once
+
+/* includes-------------------------------------------- */
+#include <string>
+#include <stdexcept>
+
+#include "liyConfing.hpp"
+/* ---------------------------------------------------- */
 
 #ifndef LIY_UTIL
 #define LIY_UTIL
 
+namespace LiyStd {
+    class OutOfRangeException final : public std::runtime_error {
+    public:
+        explicit OutOfRangeException(const char* msg);
+        LI_NODISCARD const char *what() const noexcept override;
+    private:
+        std::string msg;
+    };
+}
 
 
 #endif      //LIY_UTIL

@@ -9,24 +9,30 @@
  * @copyright Copyright (c) 2025, Yurilt.
  * 
  */
+#pragma once
 /* includes-------------------------------------------- */
 #include <cstdint>
 #include <climits>
-/* ---------------------------------------------------- */
-
-#if defined(__MSC_VER)
+#if defined(_MSC_VER)
 #include <cstddef>
 #endif  //__MSVCRT__
+#if __cplusplus >= 201703L
+#define LI_NODISCARD [[nodiscard]]
+#else
+#define LI_NODISCARD
+#endif
+/* ---------------------------------------------------- */
+
 
 #ifndef LIY_CONFING_HPP
 #define LIY_CONFING_HPP
 
 namespace LiyStd {
-    using _LiyIndexType = std::size_t;
-    using _LiySizeType = std::size_t;
+    using LiyIndexType = std::size_t;
+    using LiySizeType = std::size_t;
 
     static_assert(
-        sizeof(_LiyIndexType) * CHAR_BIT >= 64,
+        sizeof(LiyIndexType) * CHAR_BIT >= 64,
         "Requires 64-bit unsigned int type!");
 
 }
