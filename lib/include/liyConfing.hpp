@@ -15,12 +15,12 @@
 #include <climits>
 #if defined(_MSC_VER)
 #include <cstddef>
-#endif  //__MSVCRT__
+#endif  //_MSC_VER
 #if __cplusplus >= 201703L
 #define LI_NODISCARD [[nodiscard]]
 #else
 #define LI_NODISCARD
-#endif
+#endif  //__cplusplus >= 201703L
 /* ---------------------------------------------------- */
 
 

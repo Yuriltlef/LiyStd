@@ -13,14 +13,16 @@
 
 
 int main() {
-    LiyStd::LinearList<int>* list1 = new LiyStd::ArrayList<int>(20000);
-    std::cout << typeid(LiyStd::ArrayList<int>).name() << '\n';
+    using namespace LiyStd;
+    using namespace std;
+    ArrayList<int> list1(20000);
+    cout << typeid(ArrayList<int>).name() << '\n';
     int a = 0;
     try {
-        a = list1->at(20);
-    } catch (LiyStd::OutOfRangeException& e) {
-        std::cout << e.what();
+        a = list1.at(20);
+    } catch (OutOfRangeException& e) {
+        cout << e.what();
         throw;
     }
-    std::cout << '\n' << a << '\n';
+    cout << '\n' << a << '\n';
 }

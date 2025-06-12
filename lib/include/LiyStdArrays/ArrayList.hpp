@@ -92,7 +92,7 @@ namespace LiyStd {
     private:
         inline void checkIndex(LiyIndexType theIndex) const;
 
-        T* elements;            //存储元素的一维数组
+        T* elements{nullptr};             //存储元素的一维数组
         LiySizeType capacity{};  //顺序表容量
         LiySizeType length{};    //顺序表长度
     };
