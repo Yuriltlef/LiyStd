@@ -190,6 +190,42 @@ bool LiyStd::ArrayList<T>::insert(const LiyIndexType theIndex, const T &theEleme
 }
 
 /**
+ * @brief 尾插法插入元素，为了效率没有调用insert
+ * @param theElement 元素
+ * @return true 插入成功
+ * @return false 插入失败
+ */
+template<typename T>
+bool LiyStd::ArrayList<T>::push_back(const T &theElement) noexcept {
+    /* 超过表长则插入失败 */
+    if (length + 1 > capacity) return false;
+    /* 插入 */
+    elements[length] = theElement;
+    length++;
+    return true;
+}
+
+/**
+ * @brief 头插法插入元素，为了效率没有调用insert
+ * @param theElement 元素
+ * @return true 插入成功
+ * @return false 插入失败
+ */
+template<typename T>
+bool LiyStd::ArrayList<T>::push_front(const T &theElement) noexcept {
+    /* 超过表长则插入失败 */
+    if (length + 1 > capacity) return false;
+    /* 后移theIndex位置及后面的所有元素 */
+    for (LiyIndexType i = length - 1; i >= 0; --i) {
+        elements[i + 1] = elements[i];
+    }
+    /* 插入 */
+    elements[0] = theElement;
+    length++;
+    return true;
+}
+
+/**
  * @brief 清除顺序表内容
  */
 template<typename T>

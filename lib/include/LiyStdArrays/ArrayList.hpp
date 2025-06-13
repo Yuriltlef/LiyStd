@@ -94,6 +94,22 @@ namespace LiyStd {
         bool insert(LiyIndexType theIndex, const T &theElement) noexcept override;
 
         /**
+         * @brief 尾插法插入元素
+         * @param theElement 元素
+         * @return true 插入成功
+         * @return false 插入失败
+         */
+        bool push_back(const T &theElement) noexcept;
+
+        /**
+         * @brief 头插法插入元素
+         * @param theElement 元素
+         * @return true 插入成功
+         * @return false 插入失败
+         */
+        bool push_front(const T &theElement) noexcept;
+
+        /**
          * @brief 清除顺序表内容
          */
         void clear();
@@ -123,9 +139,9 @@ namespace LiyStd {
         */
         void checkIndex(LiyIndexType theIndex) const;
 
-        T* elements{nullptr};    //存储元素的一维数组
-        LiySizeType capacity{};  //顺序表容量
-        LiySizeType length{};    //顺序表长度
+        T* elements {nullptr};    //存储元素的一维数组
+        LiySizeType capacity {};  //顺序表容量
+        LiySizeType length {};    //顺序表长度
     };
 }
 
