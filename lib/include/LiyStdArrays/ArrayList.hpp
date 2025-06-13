@@ -20,15 +20,20 @@
 
 namespace LiyStd {
     /**
-     * @brief ArrayList:线性表的顺序表实现。
+     * @brief ArrayList:线性表的顺序表实现，使用的并不是静态分配而是动态分配，目的是提高利用率，不适合高安全的嵌入式系统。
      * @tparam T 类型模板
      * @see LiyStd::LinearList
      */
     template<typename T>
     class ArrayList : public LinearList<T> {
     public:
+        /**
+         * 默认产生大小和容量为0的对象。
+         */
         ArrayList() = default;
+
         explicit ArrayList(LiySizeType _capacity);
+
         ArrayList(const ArrayList<T>& arrayList);
 
         ~ArrayList() override { delete [] elements; }

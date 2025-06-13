@@ -15,14 +15,10 @@
 int main() {
     using namespace LiyStd;
     using namespace std;
-    ArrayList<int> list1(20000);
+    ArrayList<int> list1(2);
     cout << typeid(ArrayList<int>).name() << '\n';
-    int a = 0;
-    try {
-        a = list1.at(20);
-    } catch (OutOfRangeException& e) {
-        cout << e.what();
-        throw;
+    for (int i = 0; i < 21; ++i) {
+        if (!list1.insert(0, i)) cout << i << "插入失败\n";
     }
-    cout << '\n' << a << '\n';
+    list1.print(cout);
 }

@@ -28,8 +28,8 @@
 #define LIY_CONFING_HPP
 
 namespace LiyStd {
-    using LiyIndexType = std::size_t;
-    using LiySizeType = std::size_t;
+    using LiyIndexType = long long int;
+    using LiySizeType = long long int;
 
     static_assert(
         sizeof(LiyIndexType) * CHAR_BIT >= 64,
