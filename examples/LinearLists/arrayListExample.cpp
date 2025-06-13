@@ -10,15 +10,23 @@
  * 
  */
 #include "Arraylist.hpp"
+#include <chrono>
 
 
 int main() {
+    SET_UTF8();
+    using namespace std::chrono;
     using namespace LiyStd;
     using namespace std;
-    ArrayList<int> list1(2);
-    cout << typeid(ArrayList<int>).name() << '\n';
-    for (int i = 0; i < 21; ++i) {
-        if (!list1.insert(0, i)) cout << i << "插入失败\n";
+    ArrayList<int> list1(200000000);
+    auto startTime = high_resolution_clock::now();
+    for (int i = 0; i < 200000000; ++i) {
+        if (!list1.insert(i, i)) cout << i << "插入失败\n";
     }
-    list1.print(cout);
+    auto endTime = high_resolution_clock::now();
+    cout << "用时：" << duration_cast<microseconds>(endTime - startTime).count() << "us";
+    std::string chs;
+    cin >> chs ;
+    cout << chs;
+    //list1.display();
 }

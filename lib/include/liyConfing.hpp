@@ -14,13 +14,20 @@
 #include <cstdint>
 #include <climits>
 #if defined(_MSC_VER)
-#include <cstddef>
+    #include <cstddef>
 #endif  //_MSC_VER
 #if __cplusplus >= 201703L
-#define LI_NODISCARD [[nodiscard]]
+    #define LI_NODISCARD [[nodiscard]]
 #else
 #define LI_NODISCARD
-#endif  //__cplusplus >= 201703L
+    #endif  //__cplusplus >= 201703L
+#if defined(_WIN32)
+    #include <Windows.h>
+    #define SET_UTF8() SetConsoleCP(CP_UTF8); SetConsoleOutputCP(CP_UTF8)
+#elif defined(__linux__) || defined(__APPLE__)
+#include <locale.h>
+#define SET_UTF8() setlocale(LC_ALL, "en_US.UTF-8")
+#endif    //UTF-8
 /* ---------------------------------------------------- */
 
 

@@ -28,15 +28,20 @@ namespace LiyStd {
     class ArrayList : public LinearList<T> {
     public:
         /**
-         * 默认产生大小和容量为0的对象。
+         * 默认产生容量为0的对象。
          */
         ArrayList() = default;
-
+        
         explicit ArrayList(LiySizeType _capacity);
 
-        ArrayList(const ArrayList<T>& arrayList);
+        ArrayList(const T *theElements, LiySizeType _length, LiySizeType _capacity = 0);
+
+        ArrayList(const ArrayList& other);
+
+        ArrayList(ArrayList&& other) noexcept;
 
         ~ArrayList() override { delete [] elements; }
+
         /**
          * @brief 判断顺序表是否为空.
          * @return true 线性表为空
@@ -63,9 +68,9 @@ namespace LiyStd {
          * @return T& 返回引用
          */
         T& at(LiyIndexType theIndex) override;
-
+        
         /**
-         * @brief 查找元素在顺序表中的位置
+         * @brief 顺序查找元素在顺序表中的位置
          * @param theElement 要查找元素的引用
          * @return _LiyIndexType 位置索引
          */
@@ -89,19 +94,40 @@ namespace LiyStd {
         bool insert(LiyIndexType theIndex, const T &theElement) noexcept override;
 
         /**
+         * @brief 清除顺序表内容
+         */
+        void clear();
+
+        /**
          * @brief 将顺序表内容可视化输出到输出流
          * @param out 输出流
          */
         void print(std::ostream &out) const override;
 
-    private:
-        inline void checkIndex(LiyIndexType theIndex) const;
+        /**
+         * @brief 将顺序表内容以可读方式输出。
+         */
+        void display() const;
 
-        T* elements{nullptr};             //存储元素的一维数组
+        /**
+         * @brief 返回线性表容量
+         * @return LiySizeType 线性表容量
+         */
+        LI_NODISCARD LiySizeType getCapacity() const { return capacity; }
+
+    private:
+        /**
+        * @brief 检查引索合法性，如果引索大于等于当前长度则引发OutOfRangeException异常
+        * @tparam T 模板参数
+        * @param theIndex 引索
+        */
+        void checkIndex(LiyIndexType theIndex) const;
+
+        T* elements{nullptr};    //存储元素的一维数组
         LiySizeType capacity{};  //顺序表容量
         LiySizeType length{};    //顺序表长度
     };
-};
+}
 
 /* 定义 */
 #include "ArrarList.ipp"

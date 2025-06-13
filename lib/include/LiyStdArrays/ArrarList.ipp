@@ -14,6 +14,7 @@
 #include <sstream>
 #include <iomanip>
 #include <cstring>
+#include <iostream>
 
 #include "liyConfing.hpp"
 #include "liyUtil.hpp"
@@ -23,7 +24,7 @@
 
 
 /**
- * @brief 创建空顺序表，容量为capacity
+ * @brief 创建空顺序表，容量为capacity > 0
  * @tparam T 类型参数
  * @param _capacity 容量
  */
@@ -34,24 +35,50 @@ LiyStd::ArrayList<T>::ArrayList(const LiySizeType _capacity) : capacity(_capacit
     elements = new T[_capacity];
 }
 
+
 /**
- * @brief 复制构造函数，直接从对象拷贝数据。
- * @param arrayList 要复制的对象。
+ * @brief 由元素数组，长度，容量自动复制构造线性表
+ * @param theElements 元素数组
+ * @param _length 元素数组长度
+ * @param _capacity 容量，默认为_length
  */
 template<typename T>
-LiyStd::ArrayList<T>::ArrayList(const ArrayList &arrayList): elements(new T[arrayList.capacity()]) {
-    std::memcpy(elements, &arrayList.at(0), arrayList.size() * sizeof(T));
+LiyStd::ArrayList<T>::ArrayList(const T *theElements, const LiySizeType _length, const LiySizeType _capacity) :capacity(_capacity), length(_length) {
+    if (_capacity == 0) capacity = _length;
+    if (length > capacity) throw std::invalid_argument("capacity must > length.");
+    elements = new T[capacity];
+    std::memcpy(elements, theElements, length * sizeof(T));
 }
 
 /**
- * @brief 检查引索合法性，如果引索大于等于当前长度则引发OutOfRangeException异常
+ * @brief 复制构造函数。
+ * @param other 要复制的对象。
+ */
+template<typename T>
+LiyStd::ArrayList<T>::ArrayList(const ArrayList &other) : elements(new T[other.capacity]), length(other.length) {
+    std::memcpy(elements, &other.at(0), other.size() * sizeof(T));
+}
+
+/**
+ * @brief 移动构造函数，直接从对象拷贝数据。
+ * @param other 要复制的对象。
+ */
+template<typename T>
+LiyStd::ArrayList<T>::ArrayList(ArrayList&& other) noexcept : elements(std::move(other.elements)), capacity(other.capacity), length(other.length) {
+    other.elements = nullptr;
+    other.length = 0;
+    other.capacity = 0;
+}
+
+/**
+ * @brief 检查引索合法性，如果引索大于等于当前长度或小于零，引发OutOfRangeException异常
  * @tparam T 模板参数
  * @param theIndex 引索
  */
 template<typename T>
 void LiyStd::ArrayList<T>::checkIndex(const LiyIndexType theIndex) const {
     /* 检查是否小于零或超过容量 */
-    if (theIndex >= length) {
+    if (theIndex >= length || theIndex < 0) {
         std::ostringstream _s;
         _s  << "index out of bounds\n caused by "
             << typeid(*this).name() << " at " << "0x" << std::hex << reinterpret_cast<std::uintptr_t>(this)
@@ -80,9 +107,9 @@ LiyStd::LiySizeType LiyStd::ArrayList<T>::size() const {
 }
 
 /**
- * @brief 这是LiyStd库的一部分,遵循 LGPLv3协议.
- * @param theIndex
- * @return T&
+ * @brief 返回索引为theIndex的元素引用（const版本）
+ * @param theIndex 索引
+ * @return T& 返回引用
  */
 template<typename T>
 const T& LiyStd::ArrayList<T>::at(LiyIndexType theIndex) const {
@@ -92,9 +119,9 @@ const T& LiyStd::ArrayList<T>::at(LiyIndexType theIndex) const {
 }
 
 /**
- * @brief 这是LiyStd库的一部分,遵循 LGPLv3协议.
- * @param theIndex
- * @return T&
+ * @brief 返回索引为theIndex的元素引用
+ * @param theIndex 索引
+ * @return T& 返回引用
  */
 template<typename T>
 T& LiyStd::ArrayList<T>::at(LiyIndexType theIndex) {
@@ -104,30 +131,42 @@ T& LiyStd::ArrayList<T>::at(LiyIndexType theIndex) {
 }
 
 /**
- * @brief 这是LiyStd库的一部分,遵循 LGPLv3协议.
- * @param theElement
- * @return _LiyIndexType
+ * @brief 顺序查找元素在顺序表中的位置
+ * @param theElement 要查找元素的引用
+ * @return _LiyIndexType 位置索引
  */
 template<typename T>
 LiyStd::LiyIndexType LiyStd::ArrayList<T>::find(const T &theElement) const {
-    return 0;
+    for (LiyIndexType i = 0; i < length; ++i) {
+        if (elements[i] == theElement) return i;
+    }
+    return -1;
 }
 
 /**
- * @brief 这是LiyStd库的一部分,遵循 LGPLv3协议.
- * @param theIndex
- * @return true
- * @return false
+ * @brief 删除索引为theIndex的元素
+ * @param theIndex 索引
+ * @return true 删除成功
+ * @return false 删除失败
  */
 template<typename T>
-bool LiyStd::ArrayList<T>::remove(LiyIndexType theIndex) noexcept {
-    return false;
+bool LiyStd::ArrayList<T>::remove(const LiyIndexType theIndex) noexcept {
+    /* 检查长度是否合法 */
+    if (length < 1) return false;
+    /* 检查引索范围 */
+    if (theIndex < 0 || theIndex >= length) return false;
+    /* 将theIndex后面所有元素前移一位 */
+    for (LiyIndexType i = theIndex + 1; i < length; i++) {
+        elements[i - 1] = elements[i];
+    }
+    length--;
+    return true;
 }
 
 /**
  * @brief 在顺序表引索为theIndex的位置插入元素（将theIndex位置及后面的所有元素后移一位，再赋值给theIndex位置）
  * 比如：
- * A:[1,2,3,4,5] lenght = 5;
+ * A:[1,2,3,4,5] length = 5;
  * A.insert(0, 1) -> A:[1,1,2,3,4,5]
  * @param theIndex 引索，范围：[0, length]
  * @param theElement 插入元素
@@ -151,14 +190,33 @@ bool LiyStd::ArrayList<T>::insert(const LiyIndexType theIndex, const T &theEleme
 }
 
 /**
- * @brief 这是LiyStd库的一部分,遵循 LGPLv3协议.
- * @param out
+ * @brief 清除顺序表内容
+ */
+template<typename T>
+void LiyStd::ArrayList<T>::clear() {
+    length = 0;
+    elements = nullptr;
+}
+
+/**
+ * @brief 将顺序表内容可视化输出到输出流
+ * @param out 输出流
  */
 template<typename T>
 void LiyStd::ArrayList<T>::print(std::ostream &out) const {
     for (LiyIndexType i = 0; i < length; ++i) {
         out << elements[i] << ' ';
     }
+}
+
+/**
+ * @brief 将顺序表内容以可读方式输出。
+ */
+template<typename T>
+void LiyStd::ArrayList<T>::display() const {
+    std::cout << "{ ";
+    print(std::cout);
+    std::cout << "}\n";
 }
 
 #endif       //LIY_ARRAY_LIST_IPP
