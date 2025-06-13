@@ -6,7 +6,7 @@
  * @version 0.1
  * @date 2025-06-06
  * 
- * @copyright Copyright (c) 2025
+ * @copyright Copyright (c) 2025, Yurilt.
  * 
  */
 #pragma once
@@ -29,7 +29,7 @@
  * @param _capacity 容量
  */
 template<typename T>
-LiyStd::ArrayList<T>::ArrayList(const LiySizeType _capacity) : capacity(_capacity) {
+LiyStd::ArrayListVirtual<T>::ArrayListVirtual(const LiySizeType _capacity) : capacity(_capacity) {
     /* 容量必须大于零 */
     if (_capacity < 1) throw std::invalid_argument("capacity must > 0.");
     elements = new T[_capacity];
@@ -43,7 +43,7 @@ LiyStd::ArrayList<T>::ArrayList(const LiySizeType _capacity) : capacity(_capacit
  * @param _capacity 容量，默认为_length
  */
 template<typename T>
-LiyStd::ArrayList<T>::ArrayList(const T *theElements, const LiySizeType _length, const LiySizeType _capacity) :capacity(_capacity), length(_length) {
+LiyStd::ArrayListVirtual<T>::ArrayListVirtual(const T *theElements, const LiySizeType _length, const LiySizeType _capacity) :capacity(_capacity), length(_length) {
     if (_capacity == 0) capacity = _length;
     if (length > capacity) throw std::invalid_argument("capacity must > length.");
     elements = new T[capacity];
@@ -55,7 +55,7 @@ LiyStd::ArrayList<T>::ArrayList(const T *theElements, const LiySizeType _length,
  * @param other 要复制的对象。
  */
 template<typename T>
-LiyStd::ArrayList<T>::ArrayList(const ArrayList &other) : elements(new T[other.capacity]), length(other.length) {
+LiyStd::ArrayListVirtual<T>::ArrayListVirtual(const ArrayListVirtual &other) : elements(new T[other.capacity]), length(other.length) {
     std::memcpy(elements, &other.at(0), other.size() * sizeof(T));
 }
 
@@ -64,7 +64,7 @@ LiyStd::ArrayList<T>::ArrayList(const ArrayList &other) : elements(new T[other.c
  * @param other 要复制的对象。
  */
 template<typename T>
-LiyStd::ArrayList<T>::ArrayList(ArrayList&& other) noexcept : elements(std::move(other.elements)), capacity(other.capacity), length(other.length) {
+LiyStd::ArrayListVirtual<T>::ArrayListVirtual(ArrayListVirtual&& other) noexcept : elements(std::move(other.elements)), capacity(other.capacity), length(other.length) {
     other.elements = nullptr;
     other.length = 0;
     other.capacity = 0;
@@ -76,7 +76,7 @@ LiyStd::ArrayList<T>::ArrayList(ArrayList&& other) noexcept : elements(std::move
  * @param theIndex 引索
  */
 template<typename T>
-void LiyStd::ArrayList<T>::checkIndex(const LiyIndexType theIndex) const {
+void LiyStd::ArrayListVirtual<T>::checkIndex(const LiyIndexType theIndex) const {
     /* 检查是否小于零或超过容量 */
     if (theIndex >= length || theIndex < 0) {
         std::ostringstream _s;
@@ -93,7 +93,7 @@ void LiyStd::ArrayList<T>::checkIndex(const LiyIndexType theIndex) const {
  * @return false 线性表不为空
  */
 template<typename T>
-bool LiyStd::ArrayList<T>::isEmpty() const {
+bool LiyStd::ArrayListVirtual<T>::isEmpty() const {
     return length == 0;
 }
 
@@ -102,7 +102,7 @@ bool LiyStd::ArrayList<T>::isEmpty() const {
  * @return _LiySizeType 顺序表长度
  */
 template<typename T>
-LiyStd::LiySizeType LiyStd::ArrayList<T>::size() const {
+LiyStd::LiySizeType LiyStd::ArrayListVirtual<T>::size() const {
     return length;
 }
 
@@ -112,7 +112,7 @@ LiyStd::LiySizeType LiyStd::ArrayList<T>::size() const {
  * @return T& 返回引用
  */
 template<typename T>
-const T& LiyStd::ArrayList<T>::at(LiyIndexType theIndex) const {
+const T& LiyStd::ArrayListVirtual<T>::at(LiyIndexType theIndex) const {
     /* 检查范围 */
     checkIndex(theIndex);
     return elements[theIndex]; 
@@ -124,7 +124,7 @@ const T& LiyStd::ArrayList<T>::at(LiyIndexType theIndex) const {
  * @return T& 返回引用
  */
 template<typename T>
-T& LiyStd::ArrayList<T>::at(LiyIndexType theIndex) {
+T& LiyStd::ArrayListVirtual<T>::at(LiyIndexType theIndex) {
     /* 检查范围 */
     checkIndex(theIndex);
     return elements[theIndex]; 
@@ -137,7 +137,7 @@ T& LiyStd::ArrayList<T>::at(LiyIndexType theIndex) {
  * @return -1 查找失败
  */
 template<typename T>
-LiyStd::LiyIndexType LiyStd::ArrayList<T>::find(const T &theElement) const {
+LiyStd::LiyIndexType LiyStd::ArrayListVirtual<T>::find(const T &theElement) const {
     for (LiyIndexType i = 0; i < length; ++i) {
         if (elements[i] == theElement) return i;
     }
@@ -151,7 +151,7 @@ LiyStd::LiyIndexType LiyStd::ArrayList<T>::find(const T &theElement) const {
  * @return false 删除失败
  */
 template<typename T>
-bool LiyStd::ArrayList<T>::remove(const LiyIndexType theIndex) noexcept {
+bool LiyStd::ArrayListVirtual<T>::remove(const LiyIndexType theIndex) noexcept {
     /* 检查长度是否合法 */
     if (length < 1) return false;
     /* 检查引索范围 */
@@ -175,7 +175,7 @@ bool LiyStd::ArrayList<T>::remove(const LiyIndexType theIndex) noexcept {
  * @return false 插入失败（超过容量限制或插入位置不对）
  */
 template<typename T>
-bool LiyStd::ArrayList<T>::insert(const LiyIndexType theIndex, const T &theElement) noexcept {
+bool LiyStd::ArrayListVirtual<T>::insert(const LiyIndexType theIndex, const T &theElement) noexcept {
     /* 超过表长则插入失败 */
     if (length + 1 > capacity) return false;
     /* 插入位置不合法 */
@@ -197,7 +197,7 @@ bool LiyStd::ArrayList<T>::insert(const LiyIndexType theIndex, const T &theEleme
  * @return false 插入失败
  */
 template<typename T>
-bool LiyStd::ArrayList<T>::push_back(const T &theElement) noexcept {
+bool LiyStd::ArrayListVirtual<T>::push_back(const T &theElement) noexcept {
     /* 超过表长则插入失败 */
     if (length + 1 > capacity) return false;
     /* 插入 */
@@ -213,7 +213,7 @@ bool LiyStd::ArrayList<T>::push_back(const T &theElement) noexcept {
  * @return false 插入失败
  */
 template<typename T>
-bool LiyStd::ArrayList<T>::push_front(const T &theElement) noexcept {
+bool LiyStd::ArrayListVirtual<T>::push_front(const T &theElement) noexcept {
     /* 超过表长则插入失败 */
     if (length + 1 > capacity) return false;
     /* 后移theIndex位置及后面的所有元素 */
@@ -230,7 +230,7 @@ bool LiyStd::ArrayList<T>::push_front(const T &theElement) noexcept {
  * @brief 清除顺序表内容
  */
 template<typename T>
-void LiyStd::ArrayList<T>::clear() {
+void LiyStd::ArrayListVirtual<T>::clear() {
     length = 0;
     elements = nullptr;
 }
@@ -240,7 +240,7 @@ void LiyStd::ArrayList<T>::clear() {
  * @param out 输出流
  */
 template<typename T>
-void LiyStd::ArrayList<T>::print(std::ostream &out) const {
+void LiyStd::ArrayListVirtual<T>::print(std::ostream &out) const {
     for (LiyIndexType i = 0; i < length; ++i) {
         out << elements[i] << ' ';
     }
@@ -250,7 +250,7 @@ void LiyStd::ArrayList<T>::print(std::ostream &out) const {
  * @brief 将顺序表内容以可读方式输出。
  */
 template<typename T>
-void LiyStd::ArrayList<T>::display() const {
+void LiyStd::ArrayListVirtual<T>::display() const {
     std::cout << "{ ";
     print(std::cout);
     std::cout << "}\n";
@@ -259,10 +259,10 @@ void LiyStd::ArrayList<T>::display() const {
 /**
  * @brief 赋值运算符，将other复制到当前对象。
  * @param other 复制源
- * @return ArrayList& 当前对象的引用
+ * @return ArrayListVirtual& 当前对象的引用
  */
 template<typename T>
-LiyStd::ArrayList<T>& LiyStd::ArrayList<T>::operator=(const ArrayList& other) noexcept {
+LiyStd::ArrayListVirtual<T>& LiyStd::ArrayListVirtual<T>::operator=(const ArrayListVirtual& other) noexcept {
     if (this != &other) {
         capacity = other.capacity;
         length = other.length;

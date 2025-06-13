@@ -1,11 +1,11 @@
 ﻿/**
  * SPDX-License-Identifier: LGPL-3.0-only.
- * @file arraylist.hpp
+ * @file ArrayListVirtual.hpp
  * @author Yurilt (yurilt15312@outlook.com)
  * @brief 这是LiyStd库的一部分,遵循 LGPLv3协议. 
  * @version 0.1
  * @date 2025-06-04
- * 
+ * @note 
  * @copyright Copyright (c) 2025, Yurilt.
  * 
  */
@@ -13,6 +13,7 @@
 /* includes-------------------------------------------- */
 #include "liyConfing.hpp"
 #include "LinearList.hpp"
+#include "liyTraits.hpp"
 /* ---------------------------------------------------- */
 
 #ifndef LIY_ARRAY_LIST
@@ -20,27 +21,28 @@
 
 namespace LiyStd {
     /**
-     * @brief ArrayList:线性表的顺序表实现，使用的并不是静态分配而是动态分配，目的是提高利用率，不适合高安全的嵌入式系统。
+     * @brief ArrayListVirtual:线性表的顺序表实现，使用的并不是静态分配而是动态分配，目的是提高利用率，不适合高安全的嵌入式系统。
+     * @note  这是利用虚函数实现的顺序表，若需要高性能请见下面的策略模式实现。
      * @tparam T 类型模板
      * @see LiyStd::LinearList
      */
     template<typename T>
-    class ArrayList : public LinearList<T> {
+    class ArrayListVirtual : public LinearList<T> {
     public:
         /**
          * 默认产生容量为0的对象。
          */
-        ArrayList() = default;
+        ArrayListVirtual() = default;
         
-        explicit ArrayList(LiySizeType _capacity);
+        explicit ArrayListVirtual(LiySizeType _capacity);
 
-        ArrayList(const T *theElements, LiySizeType _length, LiySizeType _capacity = 0);
+        ArrayListVirtual(const T *theElements, LiySizeType _length, LiySizeType _capacity = 0);
 
-        ArrayList(const ArrayList& other);
+        ArrayListVirtual(const ArrayListVirtual& other);
 
-        ArrayList(ArrayList&& other) noexcept;
+        ArrayListVirtual(ArrayListVirtual&& other) noexcept;
 
-        ~ArrayList() override { delete [] elements; }
+        ~ArrayListVirtual() override { delete [] elements; }
 
         /**
          * @brief 判断顺序表是否为空.
@@ -60,7 +62,7 @@ namespace LiyStd {
          * @param theIndex 索引
          * @return T& 返回引用
          */
-        const T& at(LiyIndexType theIndex) const override;
+        LI_NODISCARD const T& at(LiyIndexType theIndex) const override;
 
         /**
          * @brief 返回索引为theIndex的元素引用
@@ -74,7 +76,7 @@ namespace LiyStd {
          * @param theElement 要查找元素的引用
          * @return _LiyIndexType 位置索引
          */
-        LiyIndexType find(const T& theElement) const override;
+        LI_NODISCARD LiyIndexType find(const T& theElement) const override;
 
         /**
          * @brief 删除索引为theIndex的元素
@@ -134,9 +136,9 @@ namespace LiyStd {
         /**
          * @brief 赋值运算符，将other复制到当前对象。
          * @param other 复制源
-         * @return ArrayList& 当前对象的引用
+         * @return ArrayListVirtual& 当前对象的引用
          */
-        ArrayList& operator=(const ArrayList &other) noexcept;
+        ArrayListVirtual& operator=(const ArrayListVirtual &other) noexcept;
 
     private:
         /**
@@ -150,9 +152,18 @@ namespace LiyStd {
         LiySizeType capacity {};  //顺序表容量
         LiySizeType length {};    //顺序表长度
     };
+
+
 }
 
 /* 定义 */
 #include "ArrarList.ipp"
+
+extern template class LiyStd::ArrayListVirtual<int>;
+extern template class LiyStd::ArrayListVirtual<LiyStd::LiySizeType>;
+extern template class LiyStd::ArrayListVirtual<float>;
+extern template class LiyStd::ArrayListVirtual<double>;
+extern template class LiyStd::ArrayListVirtual<std::string>;
+extern template class LiyStd::ArrayListVirtual<const char*>;
 
 #endif  //LIY_ARRAY_LIST

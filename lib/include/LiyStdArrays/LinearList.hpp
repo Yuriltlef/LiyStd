@@ -24,6 +24,9 @@ namespace LiyStd {
 
     /**
      * @brief 要实现的目标：线性表的抽象类。
+     * @note  作为使用虚拟基类实现的类，天然不适合在嵌入式系统以及极高性能要求的场合。
+     * 因为虚函数的开销以及运行时类型转换（RTTI）。本库为用户提供了多种选择：编译时
+     * 多态的策略模式以及运行时多态的虚函数实现。详情请见：ArrayList.hpp, LinkedList.hpp
      * @tparam T 模板参数
      */
     template <typename T>
