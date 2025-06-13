@@ -132,11 +132,12 @@ namespace LiyStd {
         LI_NODISCARD LiySizeType getCapacity() const { return capacity; }
 
         /**
-         * @brief 赋值运算符，将other复制到当前对象。
-         * @param other 复制源
-         * @return ArrayList& 当前对象的引用
+         * @brief 复制构造运算符有
+         * 
+         * @param _right 
+         * @return ArrayList& 
          */
-        ArrayList& operator=(const ArrayList &other) noexcept;
+        ArrayList& operator=(const ArrayList& _right) noexcept;
 
     private:
         /**
