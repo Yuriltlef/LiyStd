@@ -134,13 +134,14 @@ T& LiyStd::ArrayList<T>::at(LiyIndexType theIndex) {
  * @brief 顺序查找元素在顺序表中的位置
  * @param theElement 要查找元素的引用
  * @return _LiyIndexType 位置索引
+ * @return -1 查找失败
  */
 template<typename T>
 LiyStd::LiyIndexType LiyStd::ArrayList<T>::find(const T &theElement) const {
     for (LiyIndexType i = 0; i < length; ++i) {
         if (elements[i] == theElement) return i;
     }
-    return -1;
+    return LinearList<T>::npos;
 }
 
 /**

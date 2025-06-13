@@ -23,6 +23,7 @@
     #endif  //__cplusplus >= 201703L
 #if defined(_WIN32)
     #include <Windows.h>
+    /* utf-8 print should enable this */
     #define SET_UTF8() SetConsoleCP(CP_UTF8); SetConsoleOutputCP(CP_UTF8)
 #elif defined(__linux__) || defined(__APPLE__)
 #include <locale.h>

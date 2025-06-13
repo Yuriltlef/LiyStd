@@ -62,6 +62,7 @@ namespace LiyStd {
          * @brief 这是LiyStd库的一部分,遵循 LGPLv3协议.
          * @param theElement
          * @return _LiyIndexType
+         * @return -1 查找失败
          */
         virtual LiyIndexType find(const T &theElement) const = 0;
 
