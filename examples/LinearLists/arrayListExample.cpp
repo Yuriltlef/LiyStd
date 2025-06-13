@@ -18,7 +18,7 @@ int main() {
     using namespace std::chrono;
     using namespace LiyStd;
     using namespace std;
-    constexpr LiySizeType cap = 600000000;
+    constexpr LiySizeType cap = 10;
 
     ArrayList<LiySizeType> list1(cap);
     auto startTime = high_resolution_clock::now();
@@ -40,7 +40,12 @@ int main() {
     cout << u8"移动" << cap << u8"元素用时：" << duration_cast<microseconds>(endTime - startTime).count() << u8"us\n";
 
     startTime = high_resolution_clock::now();
-    ArrayList list3{ list2 };
+    ArrayList<LiySizeType> list3{}, list4{};
+    list3 = list4 = list2;
     endTime = high_resolution_clock::now();
     cout << u8"复制" << cap << u8"元素用时：" << duration_cast<microseconds>(endTime - startTime).count() << u8"us\n";
+    list1.display();
+    list2.display();
+    list3.display();
+    list4.display();
 }

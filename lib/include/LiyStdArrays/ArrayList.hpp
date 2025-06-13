@@ -131,6 +131,13 @@ namespace LiyStd {
          */
         LI_NODISCARD LiySizeType getCapacity() const { return capacity; }
 
+        /**
+         * @brief 赋值运算符，将other复制到当前对象。
+         * @param other 复制源
+         * @return ArrayList& 当前对象的引用
+         */
+        ArrayList& operator=(const ArrayList &other) noexcept;
+
     private:
         /**
         * @brief 检查引索合法性，如果引索大于等于当前长度则引发OutOfRangeException异常

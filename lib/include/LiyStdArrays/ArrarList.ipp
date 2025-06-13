@@ -255,4 +255,19 @@ void LiyStd::ArrayList<T>::display() const {
     std::cout << "}\n";
 }
 
+/**
+ * @brief 赋值运算符，将other复制到当前对象。
+ * @param other 复制源
+ * @return ArrayList& 当前对象的引用
+ */
+template<typename T>
+LiyStd::ArrayList<T>& LiyStd::ArrayList<T>::operator=(const ArrayList& other) noexcept {
+    if (this != &other) {
+        capacity = other.capacity;
+        length = other.length;
+        elements = new T[length];
+        std::memcpy(elements, other.elements, sizeof(T) * length);}
+    return *this;
+}
+
 #endif       //LIY_ARRAY_LIST_IPP
