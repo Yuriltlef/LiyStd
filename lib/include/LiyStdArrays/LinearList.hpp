@@ -10,6 +10,8 @@
  *
  */
 #pragma once
+#ifndef LIY_LINEAR_LIST
+#define LIY_LINEAR_LIST
 /* includes-------------------------------------------- */
 #include <iostream>
 #include <cstdint>
@@ -17,8 +19,6 @@
 #include "liyConfing.hpp"
 /* ---------------------------------------------------- */
 
-#ifndef LIY_LINEAR_LIST
-#define LIY_LINEAR_LIST
 
 namespace LiyStd {
 

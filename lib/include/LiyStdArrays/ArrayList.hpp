@@ -10,14 +10,14 @@
  * 
  */
 #pragma once
+#ifndef LIY_ARRAY_LIST
+#define LIY_ARRAY_LIST
 /* includes-------------------------------------------- */
 #include "liyConfing.hpp"
 #include "LinearList.hpp"
 #include "liyTraits.hpp"
 /* ---------------------------------------------------- */
 
-#ifndef LIY_ARRAY_LIST
-#define LIY_ARRAY_LIST
 
 namespace LiyStd {
     /**

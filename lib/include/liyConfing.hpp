@@ -10,6 +10,8 @@
  * 
  */
 #pragma once
+#ifndef LIY_CONFING_HPP
+#define LIY_CONFING_HPP
 /* includes-------------------------------------------- */
 #include <cstdint>
 #include <climits>
@@ -32,8 +34,6 @@
 /* ---------------------------------------------------- */
 
 
-#ifndef LIY_CONFING_HPP
-#define LIY_CONFING_HPP
 
 namespace LiyStd {
     using LiyIndexType = long long int;

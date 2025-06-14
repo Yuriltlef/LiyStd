@@ -10,6 +10,8 @@
  * 
  */
 #pragma once
+#ifndef LIY_ARRAY_LIST_IPP
+#define LIY_ARRAY_LIST_IPP
 /* includes-------------------------------------------- */
 #include <sstream>
 #include <iomanip>
@@ -19,8 +21,6 @@
 #include "liyConfing.hpp"
 #include "liyUtil.hpp"
 /* ---------------------------------------------------- */
-#ifndef LIY_ARRAY_LIST_IPP
-#define LIY_ARRAY_LIST_IPP
 
 
 /**

@@ -10,6 +10,8 @@
  * 
  */
 #pragma once
+#ifndef LIY_UTIL
+#define LIY_UTIL
 
 /* includes-------------------------------------------- */
 #include <string>
@@ -18,8 +20,6 @@
 #include "liyConfing.hpp"
 /* ---------------------------------------------------- */
 
-#ifndef LIY_UTIL
-#define LIY_UTIL
 
 namespace LiyStd {
     class OutOfRangeException final : public std::runtime_error {
