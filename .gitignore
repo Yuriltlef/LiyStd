@@ -3,3 +3,4 @@ build/
 .vscode/
 .vs/
 cmake-build-debug
+.cache/
