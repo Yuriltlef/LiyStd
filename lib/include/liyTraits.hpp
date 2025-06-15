@@ -17,15 +17,10 @@
 
 /* includes-------------------------------------------- */
 #include <cstddef>
+/* 编译器要求支持 */
+#include "liyConfing.hpp"
 /* ---------------------------------------------------- */
 
-/* 编译器要求支持 */
-#if !defined(__GNUC__) && !defined(__clang__) && !defined(_MSC_VER)
-    #define LIY_COMPILER_IS_BASE_OF 0
-#else
-    #define LIY_COMPILER_IS_BASE_OF 1
-#endif
-#define INLINE_CONSTEXPR_VALUE (__cplusplus >= 201402L)
 
 namespace LiyStd {
 
@@ -71,12 +66,12 @@ namespace LiyStd {
      * ```
      * 这样，我们就可以利用这个包装类封装布尔值去编写函数模板，见下面的trueType以及falseType。
      */
-    template <typename _T, _T _v>
+    template <typename Ty, Ty _v>
     struct valueWrapper {
         /* 封装值 */
-        static constexpr _T value = _v;
+        static constexpr Ty value = _v;
         /* 封装值类别 */
-        using valueType = _T;
+        using valueType = Ty;
         /* 封装自身 */
         using type = valueWrapper;
         /* 隐式转换为值 */
@@ -88,20 +83,20 @@ namespace LiyStd {
         /**
      * @brief 基础的通用模板，作为特化模板的基础。
      * @tparam bool 非模板参数：布尔值，通过在特化模板中特化值控制生成行为
-     * @tparam _Tp 传递下去的类型信息。通用模板不会向下传递这个参数，导致编译失败触发SFINAE
+     * @tparam Tp 传递下去的类型信息。通用模板不会向下传递这个参数，导致编译失败触发SFINAE
      *             / 默认参数为void是为了方便只有一个条件。
      */
-    template <bool, typename _Tp = void>
+    template <bool, typename Tp = void>
     struct _enableIf {};
 
     /**
      * @brief 特化模板：当且仅当第一个参数为true时，会特化这一个模板，这时就会导致
      * 模板结构内包含模板参数_Tp的别名type并且可以访问。
-     * @tparam _Tp 传递下去的类型信息。
+     * @tparam Tp 传递下去的类型信息。
      */
-    template <typename _Tp>
-    struct _enableIf <true, _Tp> {
-        using type = _Tp;
+    template <typename Tp>
+    struct _enableIf <true, Tp> {
+        using type = Tp;
     };
 
     /**
@@ -122,15 +117,15 @@ namespace LiyStd {
      * 如果N>1不成立，特化模板匹配失败，这时会去匹配通用模板，但是同样模板没有别名`type`就会生成失败，导致函数模板无法实例化
      * 再来看省略一个参数的：
      * `enableIf <true>::type` 
-     * 和上面一样，会匹配特化模板，但是`_Tp`已经默认有了`void`，所以推导函数模板结果相当于void
+     * 和上面一样，会匹配特化模板，但是`Tp`已经默认有了`void`，所以推导函数模板结果相当于void
      * 关键在于，编译器会先去找通用模板，自动填充参数（`enableIf <true> -> enableIf <true, void>`）
-     * @tparam _condition bool条件
-     * @tparam _Tp 模板参数
+     * @tparam condition bool条件
+     * @tparam Tp 模板参数
      */
-    template <bool _condition, typename _Tp>
-    using enableIf_t = typename _enableIf <_condition, _Tp> ::type; 
+    template <bool condition, typename Tp>
+    using enableIf_t = typename _enableIf <condition, Tp> ::type; 
 
-    #if __cplusplus >= 201703L
+    #if AVAILABLE_CXX_LANG >= 201703L
     /* 类型归一为void，用来作模板匹配特化的条件，见下`hasXXXMember<>`部分 */
     template <typename...>
     using void_t = void;
@@ -138,7 +133,7 @@ namespace LiyStd {
     template <typename... _Ts>
     struct makeVoid { using type = void; };
     template <typename... _Ts>
-    using void_t = typename makeVoid<Ts...>::type;
+    using void_t = typename makeVoid<_Ts...>::type;
     #endif  //< Cpp 17
 
     /**
@@ -171,13 +166,13 @@ namespace LiyStd {
      */
 
     /** 判断类型是否为空 */
-    template <typename _T>
+    template <typename Ty>
     struct isVoid : public falseType {};
     template <>
     struct isVoid<void> : public trueType {};
 
     /** 判断类型是否是整数 */
-    template <typename _T>
+    template <typename Ty>
     struct isIntegral : public falseType {};
     template <> struct isIntegral<bool> : public trueType {};
     template <> struct isIntegral<char> : public trueType {};
@@ -196,130 +191,138 @@ namespace LiyStd {
     template <> struct isIntegral<unsigned long long> : public trueType {};
     
     /** 判断类型是否是float */
-    template <typename _T>
+    template <typename Ty>
     struct isFloat : public falseType {};
     template <>
     struct isFloat<float> : public trueType {};
     
     /** 判断类型是否是double */
-    template <typename _T>
+    template <typename Ty>
     struct isDouble : public falseType {};
     template <>
     struct isDouble<double> : public trueType {};
     
     /** 是否是浮点数 */
-    template <typename _T>
+    template <typename Ty>
     struct isFloatingPoint : falseType {};
     template <> struct isFloatingPoint<float> : public trueType {};
     template <> struct isFloatingPoint<double> : public trueType {};
 
     /** 是否是算术类型 */
-    template <typename _T>
-    struct isArithmetic : public boolWrapper<isIntegral<_T>::value || isFloatingPoint<_T>::value> {};
+    template <typename Ty>
+    struct isArithmetic : public boolWrapper<isIntegral<Ty>::value || isFloatingPoint<Ty>::value> {};
     
     /** 是否是有符号 */
-    template <typename _T, bool = isArithmetic<_T>::value> //健壮版本，特化模板
+    template <typename Ty, bool = isArithmetic<Ty>::value> //健壮版本，特化模板
     struct isSignedHelper : public falseType {};
-    template <typename _T>
-    struct isSignedHelper<_T, true> : public boolWrapper<static_cast<_T>(-1) < static_cast<_T>(0)> {};
-    template <typename _T>
-    struct isSigned : public isSignedHelper<_T>::type {};
+    template <typename Ty>
+    struct isSignedHelper<Ty, true> : public boolWrapper<static_cast<Ty>(-1) < static_cast<Ty>(0)> {};
+    template <typename Ty>
+    struct isSigned : public isSignedHelper<Ty>::type {};
 
     /** 是否是无符号 */
-    template <typename _T>
-    struct isUnsigned : public boolWrapper<isArithmetic<_T>::value && !isSigned<_T>::value> {};
+    template <typename Ty>
+    struct isUnsigned : public boolWrapper<isArithmetic<Ty>::value && !isSigned<Ty>::value> {};
     
     /** 是否是LiySizeType */
-    template <typename _T>
+    template <typename Ty>
     struct isLiySizeType : public falseType {};
     template <>
     struct isLiySizeType<long long> : public trueType {};
     
     /** 判断类型是否是nullptr */
-    template <typename _T>
+    template <typename Ty>
     struct isNullptr : public falseType {};
     template <>
     struct isNullptr<std::nullptr_t> : public trueType {};
     
     /** 判断类型是否是指针 */
-    template <typename _T>
+    template <typename Ty>
     struct isPointer : public falseType {};
-    template <typename _T>
-    struct isPointer<_T*> : public trueType {};
+    template <typename Ty>
+    struct isPointer<Ty*> : public trueType {};
     
     /** 是否是基础类型 */
-    template <typename _T>
-    struct isFundamental : public boolWrapper<(isVoid<_T>::value || isNullptr<_T>::value || isArithmetic<_T>::value)> {};
+    template <typename Ty>
+    struct isFundamental : public boolWrapper<(isVoid<Ty>::value || isNullptr<Ty>::value || isArithmetic<Ty>::value)> {};
     
     /** 是否为复合类型 */
-    template <typename _T>
-    struct isCompound : public boolWrapper<!isFundamental<_T>::value> {};
+    template <typename Ty>
+    struct isCompound : public boolWrapper<!isFundamental<Ty>::value> {};
   
     /** 判断类型是否是左值引用 */
-    template <typename _T>
+    template <typename Ty>
     struct isLvalueReference : public falseType {};
-    template <typename _T>
-    struct isLvalueReference<_T&> : public trueType {};
+    template <typename Ty>
+    struct isLvalueReference<Ty&> : public trueType {};
 
     /** 判断类型是否是右值引用 */
-    template <typename _T>
+    template <typename Ty>
     struct isRvalueReference : public falseType {};
-    template <typename _T>
-    struct isRvalueReference<_T&&> : public trueType {};
+    template <typename Ty>
+    struct isRvalueReference<Ty&&> : public trueType {};
 
     /** 是否是引用 */
-    template <typename _T>
-    struct isReference : public boolWrapper<isLvalueReference<_T>::value || isRvalueReference<_T>::value> {};
+    template <typename Ty>
+    struct isReference : public boolWrapper<isLvalueReference<Ty>::value || isRvalueReference<Ty>::value> {};
 
     /** 判断是否是数组 */
-    template <typename _T>
+    template <typename Ty>
     struct isArray : public falseType {};
-    template <typename _T>
-    struct isArray<_T[]> : public trueType {};
-    template <typename _T, size_t _N>
-    struct isArray<_T[_N]> : public trueType {};
+    template <typename Ty>
+    struct isArray<Ty[]> : public trueType {};
+    template <typename Ty, size_t N>
+    struct isArray<Ty[N]> : public trueType {};
 
     /** cv检测 */
-    template <typename _T>
+    template <typename Ty>
     struct isConst : public falseType {};
-    template <typename _T>
-    struct isConst<const _T> : public trueType {};
-    template <typename _T>
+    template <typename Ty>
+    struct isConst<const Ty> : public trueType {};
+    template <typename Ty>
     struct isVolatile : public falseType {};
-    template <typename _T>
-    struct isVolatile<volatile _T> : public trueType {};
+    template <typename Ty>
+    struct isVolatile<volatile Ty> : public trueType {};
 
     /** 同类型检测 */
-    template <typename _T, typename _U>
+    template <typename Ty, typename Up>
     struct isSame : public falseType {};
-    template <typename _T>
-    struct isSame<_T, _T> : public trueType {};
+    template <typename Ty>
+    struct isSame<Ty, Ty> : public trueType {};
 
     /* 编译器支持，采用编译器实现 */
-    #if LIY_COMPILER_IS_BASE_OF
+#if LIY_COMPILER_IS_BASE_OF
     /** 是否是类类型 */
-    template <typename _T>
-    struct isClass : public boolWrapper<__is_class(_T)> {};
+    template <typename Ty>
+    struct isClass : public boolWrapper<__is_class(Ty)> {};
 
     /** 是否是枚举类型 */
-    template <typename _T>
-    struct isEnum : public boolWrapper<__is_enum(_T)> {};
+    template <typename Ty>
+    struct isEnum : public boolWrapper<__is_enum(Ty)> {};
 
     /** 是否是联合体类型 */
-    template <typename _T>
-    struct isUnion : public boolWrapper<__is_union(_T)> {};
+    template <typename Ty>
+    struct isUnion : public boolWrapper<__is_union(Ty)> {};
 
     /** 是否是函数 */
-    template <typename _T>
-    struct isFunction : public boolWrapper<__is_function(_T)> {};
+#if defined(_GLIBCXX_USE_BUILTIN_TRAIT)
+#if _GLIBCXX_USE_BUILTIN_TRAIT(__is_function)
+    template <typename T>
+    struct isFunction : public boolWrapper<__is_function(T)> {};
+#endif   //_GLIBCXX_USE_BUILTIN_TRAIT
+#else    //no _GLIBCXX_USE_BUILTIN_TRAIT
+    /* 只有函数类型和引用类型不能被const修饰 */
+    template <typename T>
+    struct isFunction : public boolWrapper<!isConst<T>::value && isReference<T>::value> {};
+ #endif  //GLIBCXX_USE_BUILTIN_TRAIT
 
     /** Derived是否继承自Base */
     template <typename Base, typename Derived>
     struct isBaseOf : public boolWrapper<__is_base_of(Base, Derived)> {};
 
     /* 手动实现 */
-    #else
-    template <typename _T>
+#else  //no LIY_COMPILER_IS_BASE_OF
+    template <typename Ty>
     struct isClass {
         template <typename U> 
         static trueType test(int U::*);  // 成员指针测试
@@ -327,284 +330,294 @@ namespace LiyStd {
         template <typename> 
         static falseType test(...);
 
-        static constexpr bool value = decltype(test<_T>(nullptr))::value;
+        static constexpr bool value = decltype(test<Ty>(nullptr))::value;
     };
     /** 手动实现 isEnum */
-    template <typename _T>
+    template <typename Ty>
     struct isEnum {
-        static constexpr bool value = !isClass<_T>::value && 
-                                    !isIntegral<_T>::value &&
-                                    !isFloatingPoint<_T>::value &&
-                                    !isVoid<_T>::value &&
-                                    !isNullptr<_T>::value;
+        static constexpr bool value = !isClass<Ty>::value && 
+                                    !isIntegral<Ty>::value &&
+                                    !isFloatingPoint<Ty>::value &&
+                                    !isVoid<Ty>::value &&
+                                    !isNullptr<Ty>::value;
     };
-    #endif  //LIY_COMPILER_IS_BASE_OF
+    /* 只有函数类型和引用类型不能被const修饰 */
+    template <typename T>
+    struct isFunction : public boolWrapper<!isConst<T>::value && isReference<T>::value> {};
+#endif  //LIY_COMPILER_IS_BASE_OF
 
     /** 是否为标量 */
-    template <typename _T>
+    template <typename Ty>
     struct isScalar : public boolWrapper<
-        isArithmetic<_T>::value ||
-        isEnum<_T>::value ||
-        isPointer<_T>::value ||
-        isNullptr<_T>::value
+        isArithmetic<Ty>::value ||
+        isEnum<Ty>::value ||
+        isPointer<Ty>::value ||
+        isNullptr<Ty>::value
     > {};
 
     /** 成员指针检测_T是否是_U成员指针 */
-    template <typename _T>
+    template <typename Ty>
     struct isMemberPointer : public falseType {};
-    template <typename _T, typename _U>
-    struct isMemberPointer<_T _U::*> : public trueType {};
+    template <typename Ty, typename Up>
+    struct isMemberPointer<Ty Up::*> : public trueType {};
 
     /*************************** 类型标识符操作 ********************************/
     /**
      * @brief 移除 const 修饰符
-     * @tparam _T 输入类型
+     * @tparam Ty 输入类型
      * 示例：
      * ```cpp
         removeConst_t<const int>; // -> int
         removeConst_t<int> ; // -> int
      * ```
      */
-    template <typename _T> struct removeConst { using type = _T; };
-    template <typename _T> struct removeConst<const _T> { using type = _T; };
-    template <typename _T>
-    using removeConst_t = typename removeConst <_T> ::type;
+    template <typename Ty> struct removeConst { using type = Ty; };
+    template <typename Ty> struct removeConst<const Ty> { using type = Ty; };
+    template <typename Ty>
+    using removeConst_t = typename removeConst <Ty> ::type;
 
     /**
      * @brief 移除 volatile 修饰符
-     * @tparam _T 输入类型
+     * @tparam Ty 输入类型
      * 示例：
      * ```cpp
         removeVolatile_t<volatile int>; // -> int
         removeVolatile_t<int> ; // -> int
      * ```
      */
-    template <typename _T> struct removeVolatile { using type = _T; };
-    template <typename _T> struct removeVolatile<volatile _T> { using type = _T; };
-    template <typename _T>
-    using removeVolatile_t = typename removeVolatile <_T> ::type;
+    template <typename Ty> struct removeVolatile { using type = Ty; };
+    template <typename Ty> struct removeVolatile<volatile Ty> { using type = Ty; };
+    template <typename Ty>
+    using removeVolatile_t = typename removeVolatile <Ty> ::type;
 
     /**
      * @brief 同时移除const volatile 修饰符
-     * @tparam _T 输入类型
+     * @tparam Ty 输入类型
      * 示例：
      * ```cpp
         removeCV_t<const volatile int>; // -> int
      * ```
      */
-    template <typename _T> struct removeCV { using type = removeVolatile_t<removeConst_t<_T>>; };
-    template <typename _T>
-    using removeCV_t = typename removeCV <_T> ::type;
+    template <typename Ty> struct removeCV { using type = removeVolatile_t<removeConst_t<Ty>>; };
+    template <typename Ty>
+    using removeCV_t = typename removeCV <Ty> ::type;
 
     /**
      * @brief 移除引用修饰符
-     * @tparam _T 输入类型
+     * @tparam Ty 输入类型
      * 示例：
      * ```cpp
         removeReference_t<int&>; // -> int
         removeReference_t<int&&>; // -> int
      * ```
      */
-    template <typename _T> struct removeReference { using type = _T; };
-    template <typename _T> struct removeReference<_T&> { using type = _T; };
-    template <typename _T> struct removeReference<_T&&> { using type = _T; };
-    template <typename _T>
-    using removeReference_t = typename removeReference <_T> ::type;
+    template <typename Ty> struct removeReference { using type = Ty; };
+    template <typename Ty> struct removeReference<Ty&> { using type = Ty; };
+    template <typename Ty> struct removeReference<Ty&&> { using type = Ty; };
+    template <typename Ty>
+    using removeReference_t = typename removeReference <Ty> ::type;
 
     /**
      * @brief 移除一层指针修饰符
-     * @tparam _T 输入类型
+     * @tparam Ty 输入类型
      * 示例：
      * ```cpp
         removePointer_t<int*>; // -> int
         removePointer_t<int**>; // -> int*
      * ```
      */
-    template <typename _T> struct removePointer { using type = _T; };
-    template <typename _T> struct removePointer<_T*> { using type = _T; };
-    template <typename _T> struct removePointer<_T* const> { using type = _T; };
-    template <typename _T> struct removePointer<_T* volatile> { using type = _T; };
-    template <typename _T> struct removePointer<_T* const volatile> { using type = _T; };
-    template <typename _T>
-    using removePointer_t = typename removePointer <_T> ::type;
+    template <typename Ty> struct removePointer { using type = Ty; };
+    template <typename Ty> struct removePointer<Ty*> { using type = Ty; };
+    template <typename Ty> struct removePointer<Ty* const> { using type = Ty; };
+    template <typename Ty> struct removePointer<Ty* volatile> { using type = Ty; };
+    template <typename Ty> struct removePointer<Ty* const volatile> { using type = Ty; };
+    template <typename Ty>
+    using removePointer_t = typename removePointer <Ty> ::type;
 
     /**
      * @brief 递归移除所有指针(不带有cv)
-     * @tparam _T 输入类型
+     * @tparam Ty 输入类型
      * 示例：
      * ```cpp
         removeAllPointers_t<int*>; // -> int
         removeAllPointers_t<int**>; // -> int
      * ```
      */
-    template <typename _T> struct removeAllPointers { using type = _T; };
-    template <typename _T> struct removeAllPointers<_T*> { using type = typename removeAllPointers<_T>::type; };
-    template <typename _T>
-    using removeAllPointers_t = typename removeAllPointers <_T> ::type;
+    template <typename Ty> struct removeAllPointers { using type = Ty; };
+    template <typename Ty> struct removeAllPointers<Ty*> { using type = typename removeAllPointers<Ty>::type; };
+    template <typename Ty>
+    using removeAllPointers_t = typename removeAllPointers <Ty> ::type;
 
     /**
      * @brief 递归移除所有修饰符
-     * @tparam _T 输入类型
+     * @tparam Ty 输入类型
      * 示例：
      * ```cpp
         decay_t<const volatile int*&&>; // -> int
      * ```
      */
-    template <typename _T> struct decay {
+    template <typename Ty> struct decay {
     private:
         /* 先移除引用 */
-        using _U = removeReference_t<_T>;
+        using Up = removeReference_t<Ty>;
     public:
         /* 移除cv */
-        using type = removeCV_t<_U>;
+        using type = removeCV_t<Up>;
     };
     /* 数组退化为指针 */
-    template <typename _T> struct decay<_T[]> { using type = _T*; };
-    template <typename _T, size_t _N> struct decay<_T[_N]> { using type = _T*; };
+    template <typename Ty> struct decay<Ty[]> { using type = Ty*; };
+    template <typename Ty, size_t N> struct decay<Ty[N]> { using type = Ty*; };
     /* 函数类型退化为函数指针 */
     template <typename Ret, typename... Args> struct decay<Ret(Args...)> { using type = Ret(*)(Args...); };
-    template <typename _T>
-    using decay_t = typename decay <_T> ::type;
+    template <typename Ty>
+    using decay_t = typename decay <Ty> ::type;
 
     /**
      * @brief 添加一个指针修饰符，先移除引用然后添加指针。
-     * @tparam _T 输入类型
+     * @tparam Ty 输入类型
      * 示例：
      * ```cpp
         addPointer_t<int>; // -> int*
      * ```
      */
-    template <typename _T> struct addPointer { using type = removeReference_t<_T>*; };
-    template <typename _T>
-    using addPointer_t = typename addPointer <_T> :: type;
+    template <typename Ty> struct addPointer { using type = removeReference_t<Ty>*; };
+    template <typename Ty>
+    using addPointer_t = typename addPointer <Ty> :: type;
 
     /**
      * @brief 添加const修饰符。
-     * @tparam _T 输入类型
+     * @tparam Ty 输入类型
      * 示例：
      * ```cpp
         addConst_t<int>; // -> const int
      * ```
      */
-    template <typename _T> struct addConst { using type = const _T; };
-    template <typename _T>
-    using addConst_t = typename addConst <_T> ::type;
+    template <typename Ty> struct addConst { using type = const Ty; };
+    template <typename Ty>
+    using addConst_t = typename addConst <Ty> ::type;
 
     /**
      * @brief 添加volatile修饰符。
-     * @tparam _T 输入类型
+     * @tparam Ty 输入类型
      * 示例：
      * ```cpp
         addVolatile_t<int>; // -> volatile int
      * ```
      */
-    template <typename _T> struct addVolatile { using type = volatile _T; };
-    template <typename _T>
-    using addVolatile_t = typename addVolatile <_T> ::type;
+    template <typename Ty> struct addVolatile { using type = volatile Ty; };
+    template <typename Ty>
+    using addVolatile_t = typename addVolatile <Ty> ::type;
 
     /**
      * @brief 添加cv修饰符。
-     * @tparam _T 输入类型
+     * @tparam Ty 输入类型
      * 示例：
      * ```cpp
         addCV_t<int>; // -> const volatile int
      * ```
      */
-    template <typename _T> struct addCV { using type = const volatile _T; };
-    template <typename _T>
-    using addCV_t = typename addCV <_T> ::type;
+    template <typename Ty> struct addCV { using type = const volatile Ty; };
+    template <typename Ty>
+    using addCV_t = typename addCV <Ty> ::type;
 
     /**
      * @brief 添加左值引用。
-     * @tparam _T 输入类型
+     * @tparam Ty 输入类型
      * @note 无法对 void 添加引用
      * 示例：
      * ```cpp
         addLvalueReference_t<int>; // -> int&
      * ```
      */
-    template <typename _T> struct addLvalueReference { using type = _T&; };
+    template <typename Ty> struct addLvalueReference { using type = Ty&; };
     template <> struct addLvalueReference<void> { using type = void; };
     template <> struct addLvalueReference<const void> { using type = const void; };
-    template <typename _T>
-    using addLvalueReference_t = typename addLvalueReference <_T> ::type;
+    template <typename Ty>
+    using addLvalueReference_t = typename addLvalueReference <Ty> ::type;
 
     /**
      * @brief 添加右值引用。
-     * @tparam _T 输入类型
+     * @tparam Ty 输入类型
      * @note 无法对 void 添加引用
      * 示例：
      * ```cpp
         addRvalueReference_t<int>; // -> int&&
      * ```
      */
-    template <typename _T> struct addRvalueReference { using type = _T&&; };
+    template <typename Ty> struct addRvalueReference { using type = Ty&&; };
     template <> struct addRvalueReference<void> { using type = void; };
     template <> struct addRvalueReference<const void> { using type = const void; };
-    template <typename _T>
-    using addRvalueReference_t = typename addRvalueReference <_T> ::type;
+    template <typename Ty>
+    using addRvalueReference_t = typename addRvalueReference <Ty> ::type;
 
     /*************************** 类型特征辅助 ********************************/
     /**
      * @brief 检测类型是否相同（忽略cv限定符）
-     * @tparam _T 第一个类型
-     * @tparam _U 第二个类型
+     * @tparam Ty 第一个类型
+     * @tparam Up 第二个类型
      * 示例：
      * ```cpp
         isSameIgnoreCV_v<int, const int>; // -> true
      * ```
      */ 
-    template <typename _T, typename _U> struct isSameIgnoreCV {
+    template <typename Ty, typename Up> struct isSameIgnoreCV {
     private:
-        using T_NoCV = removeCV_t<_T>;
-        using U_NoCV = removeCV_t<_U>;
+        using T_NoCV = removeCV_t<Ty>;
+        using U_NoCV = removeCV_t<Up>;
     public:
         using type = typename isSame<T_NoCV, U_NoCV> ::type;
         static constexpr bool value = type::value;
     };
 
     /* 提供直接访问值 */
-    #if INLINE_CONSTEXPR_VALUE
+#if INLINE_CONSTEXPR_VALUE
 
-    template <typename _T> inline constexpr bool isVoid_v = isVoid<_T> ::value;
-    template <typename _T> inline constexpr bool isIntegral_v = isIntegral<_T> ::value;
-    template <typename _T> inline constexpr bool isFloat_v = isFloat<_T> ::value;
-    template <typename _T> inline constexpr bool isDouble_v = isDouble<_T> ::value;
-    template <typename _T> inline constexpr bool isFloatingPoint_v = isFloatingPoint<_T> ::value;
-    template <typename _T> inline constexpr bool isArithmetic_v = isArithmetic<_T> ::value;
-    template <typename _T> inline constexpr bool isSigned_v = isSigned<_T> ::value;
-    template <typename _T> inline constexpr bool isLiySizeType_v = isLiySizeType<_T> ::value;
-    template <typename _T> inline constexpr bool isNullptr_v = isNullptr<_T> ::value;
-    template <typename _T> inline constexpr bool isPointer_v = isPointer<_T> ::value;
-    template <typename _T> inline constexpr bool isLvalueReference_v = isLvalueReference<_T> ::value;
-    template <typename _T> inline constexpr bool isRvalueReference_v = isRvalueReference<_T> ::value;
-    template <typename _T> inline constexpr bool isArray_v = isArray<_T> ::value;
-    template <typename _T> inline constexpr bool isConst_v = isConst<_T> ::value;
-    template <typename _T> inline constexpr bool isVolatile_v = isVolatile<_T> ::value;
-    template <typename _T> inline constexpr bool isClass_v = isClass<_T> ::value;
-    template <typename _T> inline constexpr bool isEnum_v = isEnum<_T> ::value;
-    template <typename _T> inline constexpr bool isUnion_v = isUnion<_T> ::value;
-    template <typename _T> inline constexpr bool isFunction_v = isFunction<_T> ::value;
-    template <typename _T, typename _U> inline constexpr bool isSame_v = isSame<_T, _U> ::value;
-    template <typename _T, typename _U> inline constexpr bool isSameIgnoreCV_v = isSameIgnoreCV<_T, _U> ::value;
+    template <typename Ty> inline constexpr bool isVoid_v = isVoid<Ty> ::value;
+    template <typename Ty> inline constexpr bool isIntegral_v = isIntegral<Ty> ::value;
+    template <typename Ty> inline constexpr bool isFloat_v = isFloat<Ty> ::value;
+    template <typename Ty> inline constexpr bool isDouble_v = isDouble<Ty> ::value;
+    template <typename Ty> inline constexpr bool isFloatingPoint_v = isFloatingPoint<Ty> ::value;
+    template <typename Ty> inline constexpr bool isArithmetic_v = isArithmetic<Ty> ::value;
+    template <typename Ty> inline constexpr bool isSigned_v = isSigned<Ty> ::value;
+    template <typename Ty> inline constexpr bool isUnsigned_v = isUnsigned<Ty> ::value;
+    template <typename Ty> inline constexpr bool isLiySizeType_v = isLiySizeType<Ty> ::value;
+    template <typename Ty> inline constexpr bool isNullptr_v = isNullptr<Ty> ::value;
+    template <typename Ty> inline constexpr bool isPointer_v = isPointer<Ty> ::value;
+    template <typename Ty> inline constexpr bool isFundamental_v = isFundamental<Ty> ::value;
+    template <typename Ty> inline constexpr bool isCompound_v = isCompound<Ty> ::value;
+    template <typename Ty> inline constexpr bool isLvalueReference_v = isLvalueReference<Ty> ::value;
+    template <typename Ty> inline constexpr bool isRvalueReference_v = isRvalueReference<Ty> ::value;
+    template <typename Ty> inline constexpr bool isReference_v = isReference<Ty> ::value;
+    template <typename Ty> inline constexpr bool isArray_v = isArray<Ty> ::value;
+    template <typename Ty> inline constexpr bool isConst_v = isConst<Ty> ::value;
+    template <typename Ty> inline constexpr bool isVolatile_v = isVolatile<Ty> ::value;
+    template <typename Ty> inline constexpr bool isClass_v = isClass<Ty> ::value;
+    template <typename Ty> inline constexpr bool isEnum_v = isEnum<Ty> ::value;
+    template <typename Ty> inline constexpr bool isUnion_v = isUnion<Ty> ::value;
+    template <typename Ty> inline constexpr bool isFunction_v = isFunction<Ty> ::value;
+    template <typename Ty> inline constexpr bool isScalar_v = isScalar<Ty> ::value;
+    template <typename Ty> inline constexpr bool isMemberPointer_v = isMemberPointer<Ty> ::value;
+    template <typename Ty, typename Up> inline constexpr bool isBaseOf_v = isBaseOf<Ty, Up> ::value;
+    template <typename Ty, typename Up> inline constexpr bool isSame_v = isSame<Ty, Up> ::value;
+    template <typename Ty, typename Up> inline constexpr bool isSameIgnoreCV_v = isSameIgnoreCV<Ty, Up> ::value;
 
-    #endif
+#endif
 
     /*************************** 类型选择器 ********************************/
     /**
      * @brief 条件类型选择器
-     * @tparam _B 布尔条件
-     * @tparam _T 条件为真时选择的类型
-     * @tparam _F 条件为假时选择的类型
+     * @tparam B 布尔条件
+     * @tparam Ty 条件为真时选择的类型
+     * @tparam F 条件为假时选择的类型
      * 示例：
      * ```cpp
         conditional_t<true, int, float>; // -> int
      * ```
      */
-    template <bool _B, typename _T, typename _F> struct conditional { using type = _T; };
-    template <typename _T, typename _F> struct conditional<false, _T, _F> { using type = _F; };
-    template <bool _B, typename _T, typename _F>
-    using conditional_t = typename conditional <_B, _T, _F> ::type;
+    template <bool B, typename Ty, typename F> struct conditional { using type = Ty; };
+    template <typename Ty, typename F> struct conditional<false, Ty, F> { using type = F; };
+    template <bool B, typename Ty, typename F>
+    using conditional_t = typename conditional <B, Ty, F> ::type;
 
 }
 #endif  //LIY_TYPE_TRAITS

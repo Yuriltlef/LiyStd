@@ -19,6 +19,7 @@
 #include <iostream>
 
 #include "liyConfing.hpp"
+#include "ArrayList.hpp"    //for clangd
 #include "liyUtil.hpp"
 /* ---------------------------------------------------- */
 

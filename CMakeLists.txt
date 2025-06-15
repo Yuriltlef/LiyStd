@@ -19,6 +19,7 @@ set(LIYSTD_LICENSE "LGPL-3.0" CACHE STRING "Library license type")
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 #接口库
 set(liy_lib_includes 
@@ -55,10 +56,10 @@ add_subdirectory(tests/Sets)
 
 #编码兼容utf8
 if(MSVC)
-    add_compile_options("$<$C_COMPILER_ID:MSVC>:/utf-8>")
-    add_compile_options("$<$CXX_COMPILER_ID:MSVC>:/utf-8>")
+    add_compile_options("/utf-8")
     add_compile_options("/execution-charset:utf-8")
     add_compile_options("/source-charset:utf-8")
+    add_compile_options("/Zc:__cplusplus")
 else()
     add_compile_options("-finput-charset=UTF-8" "-fexec-charset=UTF-8")
 endif()
