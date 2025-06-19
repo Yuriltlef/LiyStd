@@ -125,16 +125,16 @@ namespace LiyStd {
     template <bool condition, typename Tp>
     using enableIf_t = typename _enableIf <condition, Tp> ::type; 
 
-    #if AVAILABLE_CXX_LANG >= 201703L
+#if AVAILABLE_CXX_LANG >= 201703L
     /* 类型归一为void，用来作模板匹配特化的条件，见下`hasXXXMember<>`部分 */
     template <typename...>
     using void_t = void;
-    #else   //Cpp 17
+#else   //Cpp 17
     template <typename... _Ts>
     struct makeVoid { using type = void; };
     template <typename... _Ts>
     using void_t = typename makeVoid<_Ts...>::type;
-    #endif  //< Cpp 17
+#endif  //< Cpp 17
 
     /**
      * @brief 封装bool。
@@ -174,21 +174,21 @@ namespace LiyStd {
     /** 判断类型是否是整数 */
     template <typename Ty>
     struct isIntegral : public falseType {};
-    template <> struct isIntegral<bool> : public trueType {};
-    template <> struct isIntegral<char> : public trueType {};
-    template <> struct isIntegral<signed char> : public trueType {};
-    template <> struct isIntegral<unsigned char> : public trueType {};
-    template <> struct isIntegral<wchar_t> : public trueType {};
-    template <> struct isIntegral<char16_t> : public trueType {};
-    template <> struct isIntegral<char32_t> : public trueType {};
-    template <> struct isIntegral<short> : public trueType {};
-    template <> struct isIntegral<unsigned short> : public trueType {};
-    template <> struct isIntegral<int> : public trueType {};
-    template <> struct isIntegral<unsigned int> : public trueType {};
-    template <> struct isIntegral<long> : public trueType {};
-    template <> struct isIntegral<unsigned long> : public trueType {};
-    template <> struct isIntegral<long long> : public trueType {};
-    template <> struct isIntegral<unsigned long long> : public trueType {};
+    template <> struct isIntegral<bool>                 : public trueType {};
+    template <> struct isIntegral<char>                 : public trueType {};
+    template <> struct isIntegral<signed char>          : public trueType {};
+    template <> struct isIntegral<unsigned char>        : public trueType {};
+    template <> struct isIntegral<wchar_t>              : public trueType {};
+    template <> struct isIntegral<char16_t>             : public trueType {};
+    template <> struct isIntegral<char32_t>             : public trueType {};
+    template <> struct isIntegral<short>                : public trueType {};
+    template <> struct isIntegral<unsigned short>       : public trueType {};
+    template <> struct isIntegral<int>                  : public trueType {};
+    template <> struct isIntegral<unsigned int>         : public trueType {};
+    template <> struct isIntegral<long>                 : public trueType {};
+    template <> struct isIntegral<unsigned long>        : public trueType {};
+    template <> struct isIntegral<long long>            : public trueType {};
+    template <> struct isIntegral<unsigned long long>   : public trueType {};
     
     /** 判断类型是否是float */
     template <typename Ty>
@@ -305,16 +305,16 @@ namespace LiyStd {
     struct isUnion : public boolWrapper<__is_union(Ty)> {};
 
     /** 是否是函数 */
-#if defined(_GLIBCXX_USE_BUILTIN_TRAIT)
-#if _GLIBCXX_USE_BUILTIN_TRAIT(__is_function)
-    template <typename T>
-    struct isFunction : public boolWrapper<__is_function(T)> {};
-#endif   //_GLIBCXX_USE_BUILTIN_TRAIT
-#else    //no _GLIBCXX_USE_BUILTIN_TRAIT
+    #if defined(_GLIBCXX_USE_BUILTIN_TRAIT)
+        #if _GLIBCXX_USE_BUILTIN_TRAIT(__is_function)
+        template <typename T>
+        struct isFunction : public boolWrapper<__is_function(T)> {};
+        #endif   //_GLIBCXX_USE_BUILTIN_TRAIT
+    #else    //no _GLIBCXX_USE_BUILTIN_TRAIT
     /* 只有函数类型和引用类型不能被const修饰 */
     template <typename T>
     struct isFunction : public boolWrapper<!isConst<T>::value && isReference<T>::value> {};
- #endif  //GLIBCXX_USE_BUILTIN_TRAIT
+    #endif  //GLIBCXX_USE_BUILTIN_TRAIT
 
     /** Derived是否继承自Base */
     template <typename Base, typename Derived>
@@ -572,34 +572,34 @@ namespace LiyStd {
     /* 提供直接访问值 */
 #if INLINE_CONSTEXPR_VALUE
 
-    template <typename Ty> inline constexpr bool isVoid_v = isVoid<Ty> ::value;
-    template <typename Ty> inline constexpr bool isIntegral_v = isIntegral<Ty> ::value;
-    template <typename Ty> inline constexpr bool isFloat_v = isFloat<Ty> ::value;
-    template <typename Ty> inline constexpr bool isDouble_v = isDouble<Ty> ::value;
-    template <typename Ty> inline constexpr bool isFloatingPoint_v = isFloatingPoint<Ty> ::value;
-    template <typename Ty> inline constexpr bool isArithmetic_v = isArithmetic<Ty> ::value;
-    template <typename Ty> inline constexpr bool isSigned_v = isSigned<Ty> ::value;
-    template <typename Ty> inline constexpr bool isUnsigned_v = isUnsigned<Ty> ::value;
-    template <typename Ty> inline constexpr bool isLiySizeType_v = isLiySizeType<Ty> ::value;
-    template <typename Ty> inline constexpr bool isNullptr_v = isNullptr<Ty> ::value;
-    template <typename Ty> inline constexpr bool isPointer_v = isPointer<Ty> ::value;
-    template <typename Ty> inline constexpr bool isFundamental_v = isFundamental<Ty> ::value;
-    template <typename Ty> inline constexpr bool isCompound_v = isCompound<Ty> ::value;
-    template <typename Ty> inline constexpr bool isLvalueReference_v = isLvalueReference<Ty> ::value;
-    template <typename Ty> inline constexpr bool isRvalueReference_v = isRvalueReference<Ty> ::value;
-    template <typename Ty> inline constexpr bool isReference_v = isReference<Ty> ::value;
-    template <typename Ty> inline constexpr bool isArray_v = isArray<Ty> ::value;
-    template <typename Ty> inline constexpr bool isConst_v = isConst<Ty> ::value;
-    template <typename Ty> inline constexpr bool isVolatile_v = isVolatile<Ty> ::value;
-    template <typename Ty> inline constexpr bool isClass_v = isClass<Ty> ::value;
-    template <typename Ty> inline constexpr bool isEnum_v = isEnum<Ty> ::value;
-    template <typename Ty> inline constexpr bool isUnion_v = isUnion<Ty> ::value;
-    template <typename Ty> inline constexpr bool isFunction_v = isFunction<Ty> ::value;
-    template <typename Ty> inline constexpr bool isScalar_v = isScalar<Ty> ::value;
-    template <typename Ty> inline constexpr bool isMemberPointer_v = isMemberPointer<Ty> ::value;
-    template <typename Ty, typename Up> inline constexpr bool isBaseOf_v = isBaseOf<Ty, Up> ::value;
-    template <typename Ty, typename Up> inline constexpr bool isSame_v = isSame<Ty, Up> ::value;
-    template <typename Ty, typename Up> inline constexpr bool isSameIgnoreCV_v = isSameIgnoreCV<Ty, Up> ::value;
+    template <typename Ty> inline constexpr bool isVoid_v                           = isVoid<Ty> ::value;
+    template <typename Ty> inline constexpr bool isIntegral_v                       = isIntegral<Ty> ::value;
+    template <typename Ty> inline constexpr bool isFloat_v                          = isFloat<Ty> ::value;
+    template <typename Ty> inline constexpr bool isDouble_v                         = isDouble<Ty> ::value;
+    template <typename Ty> inline constexpr bool isFloatingPoint_v                  = isFloatingPoint<Ty> ::value;
+    template <typename Ty> inline constexpr bool isArithmetic_v                     = isArithmetic<Ty> ::value;
+    template <typename Ty> inline constexpr bool isSigned_v                         = isSigned<Ty> ::value;
+    template <typename Ty> inline constexpr bool isUnsigned_v                       = isUnsigned<Ty> ::value;
+    template <typename Ty> inline constexpr bool isLiySizeType_v                    = isLiySizeType<Ty> ::value;
+    template <typename Ty> inline constexpr bool isNullptr_v                        = isNullptr<Ty> ::value;
+    template <typename Ty> inline constexpr bool isPointer_v                        = isPointer<Ty> ::value;
+    template <typename Ty> inline constexpr bool isFundamental_v                    = isFundamental<Ty> ::value;
+    template <typename Ty> inline constexpr bool isCompound_v                       = isCompound<Ty> ::value;
+    template <typename Ty> inline constexpr bool isLvalueReference_v                = isLvalueReference<Ty> ::value;
+    template <typename Ty> inline constexpr bool isRvalueReference_v                = isRvalueReference<Ty> ::value;
+    template <typename Ty> inline constexpr bool isReference_v                      = isReference<Ty> ::value;
+    template <typename Ty> inline constexpr bool isArray_v                          = isArray<Ty> ::value;
+    template <typename Ty> inline constexpr bool isConst_v                          = isConst<Ty> ::value;
+    template <typename Ty> inline constexpr bool isVolatile_v                       = isVolatile<Ty> ::value;
+    template <typename Ty> inline constexpr bool isClass_v                          = isClass<Ty> ::value;
+    template <typename Ty> inline constexpr bool isEnum_v                           = isEnum<Ty> ::value;
+    template <typename Ty> inline constexpr bool isUnion_v                          = isUnion<Ty> ::value;
+    template <typename Ty> inline constexpr bool isFunction_v                       = isFunction<Ty> ::value;
+    template <typename Ty> inline constexpr bool isScalar_v                         = isScalar<Ty> ::value;
+    template <typename Ty> inline constexpr bool isMemberPointer_v                  = isMemberPointer<Ty> ::value;
+    template <typename Ty, typename Up> inline constexpr bool isBaseOf_v            = isBaseOf<Ty, Up> ::value;
+    template <typename Ty, typename Up> inline constexpr bool isSame_v              = isSame<Ty, Up> ::value;
+    template <typename Ty, typename Up> inline constexpr bool isSameIgnoreCV_v      = isSameIgnoreCV<Ty, Up> ::value;
 
 #endif
 

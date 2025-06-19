@@ -17,6 +17,7 @@
 #include <iomanip>
 #include <cstring>
 #include <iostream>
+#include <cstdint>
 
 #include "liyConfing.hpp"
 #include "ArrayList.hpp"    //for clangd

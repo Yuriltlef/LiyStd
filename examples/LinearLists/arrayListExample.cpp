@@ -24,7 +24,7 @@ int main() {
     auto startTime = high_resolution_clock::now();
 
     for (LiySizeType i = 0; i < cap; ++i) {
-        if (!list1.push_back(i)) {
+        if (!list1.push_front(i)) {
             cout << i << "插入失败\n";
             std::string chs;
             cin >> chs;

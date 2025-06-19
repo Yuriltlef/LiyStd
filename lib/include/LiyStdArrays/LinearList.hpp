@@ -14,7 +14,6 @@
 #define LIY_LINEAR_LIST
 /* includes-------------------------------------------- */
 #include <iostream>
-#include <cstdint>
 
 #include "liyConfing.hpp"
 /* ---------------------------------------------------- */
