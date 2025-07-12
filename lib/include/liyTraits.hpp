@@ -313,7 +313,7 @@ namespace LiyStd {
     #else    //no _GLIBCXX_USE_BUILTIN_TRAIT
     /* 只有函数类型和引用类型不能被const修饰 */
     template <typename T>
-    struct isFunction : public boolWrapper<!isConst<T>::value && isReference<T>::value> {};
+    struct isFunction : public boolWrapper<!isConst<const T>::value && !isReference<T>::value> {};
     #endif  //GLIBCXX_USE_BUILTIN_TRAIT
 
     /** Derived是否继承自Base */

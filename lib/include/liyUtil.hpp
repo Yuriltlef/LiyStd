@@ -16,6 +16,8 @@
 /* includes-------------------------------------------- */
 #include <string>
 #include <stdexcept>
+#include <chrono>
+#include <iostream>
 
 #include "liyConfing.hpp"
 /* ---------------------------------------------------- */
@@ -29,7 +31,16 @@ namespace LiyStd {
     private:
         std::string msg;
     };
+
+    template<typename F>
+    void liySpeedTest(const LiyStd::LiySizeType length, F func, const std::string str = u8"") {
+        using namespace std::chrono;
+        using namespace LiyStd;
+        using namespace std;
+        auto startTime = high_resolution_clock::now();
+        func();
+        auto endTime = high_resolution_clock::now();
+        cout << str << length << u8"元素" << u8"用时: " << duration_cast<microseconds>(endTime - startTime).count() << "us\n";
+    }
 }
-
-
 #endif      //LIY_UTIL
