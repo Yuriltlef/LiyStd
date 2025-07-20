@@ -199,7 +199,7 @@ bool LiyStd::ArrayListVirtual<T>::insert(const LiyIndexType theIndex, const T &t
  * @return false 插入失败
  */
 template<typename T>
-bool LiyStd::ArrayListVirtual<T>::push_back(const T &theElement) noexcept {
+bool LiyStd::ArrayListVirtual<T>::pushBack(const T &theElement) noexcept {
     /* 超过表长则插入失败 */
     if (length + 1 > capacity) return false;
     /* 插入 */
@@ -215,7 +215,7 @@ bool LiyStd::ArrayListVirtual<T>::push_back(const T &theElement) noexcept {
  * @return false 插入失败
  */
 template<typename T>
-bool LiyStd::ArrayListVirtual<T>::push_front(const T &theElement) noexcept {
+bool LiyStd::ArrayListVirtual<T>::pushFront(const T &theElement) noexcept {
     /* 超过表长则插入失败 */
     if (length + 1 > capacity) return false;
     /* 后移theIndex位置及后面的所有元素 */
@@ -234,7 +234,6 @@ bool LiyStd::ArrayListVirtual<T>::push_front(const T &theElement) noexcept {
 template<typename T>
 void LiyStd::ArrayListVirtual<T>::clear() {
     length = 0;
-    elements = nullptr;
 }
 
 /**

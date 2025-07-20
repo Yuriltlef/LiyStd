@@ -19,20 +19,21 @@ int main() {
     using namespace std::chrono;
     using namespace LiyStd;
     using namespace std;
-    constexpr LiySizeType cap = 12000000000;
+    constexpr LiySizeType cap = 12;
     
     ArrayListVirtual<LiySizeType> list1(cap);
 
     liySpeedTest(cap, 
     [&list1]() {
-        for (LiySizeType i = 0; i < cap; ++i) {
-            if (!list1.push_back(i)) {
-                cout << i << u8"插入失败\n";
-                exit(1);
+            for (LiySizeType i = 0; i < cap; ++i) {
+                if (!list1.pushBack(i)) {
+                    cout << i << u8"插入失败\n";
+                    exit(1);
+                }
             }
         }
-        return;
-    }, u8"插入");
+        , u8"插入"
+    );
 
     ArrayListVirtual<LiySizeType> list2;
     unique_ptr<ArrayListVirtual<LiySizeType>> list3;
@@ -44,13 +45,17 @@ int main() {
         }
         , u8"复制"
     );
-        liySpeedTest(
+
+    liySpeedTest(
         cap,
         [&list2, &list3]() {
             list3 = make_unique<ArrayListVirtual<LiySizeType>>(std::move(list2));
         }
         , u8"移动"
     );
-    string i;
-    cin >> i;
+    list1.clear();
+    list1.pushBack(20);
+    list1.display();
+    list2.display();
+    list3->display();
 }

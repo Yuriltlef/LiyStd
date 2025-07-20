@@ -101,7 +101,7 @@ namespace LiyStd {
          * @return true 插入成功
          * @return false 插入失败
          */
-        bool push_back(const T &theElement) noexcept;
+        bool pushBack(const T &theElement) noexcept;
 
         /**
          * @brief 头插法插入元素
@@ -109,7 +109,7 @@ namespace LiyStd {
          * @return true 插入成功
          * @return false 插入失败
          */
-        bool push_front(const T &theElement) noexcept;
+        bool pushFront(const T &theElement) noexcept;
 
         /**
          * @brief 清除顺序表内容
