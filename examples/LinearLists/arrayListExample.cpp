@@ -10,6 +10,9 @@
  *
  */
 #include "ArrayList.hpp"
+#include "liyTraits.hpp"
+#include <chrono>
+#include "LinkedList.hpp"
 #include <errhandlingapi.h>
 #include <memory>
 #include "liyTraits.hpp"
@@ -19,8 +22,14 @@ int main() {
     using namespace std::chrono;
     using namespace LiyStd;
     using namespace std;
+<<<<<<< HEAD
     constexpr LiySizeType cap = 12;
     
+=======
+    constexpr LiySizeType cap = 10;
+    static_assert(isArithmetic_v<int>, "hello");
+
+>>>>>>> 8907f2751c222ec3f28c98311fa40b075b354b27
     ArrayListVirtual<LiySizeType> list1(cap);
 
     liySpeedTest(cap, 
