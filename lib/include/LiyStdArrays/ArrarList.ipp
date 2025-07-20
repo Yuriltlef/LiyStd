@@ -2,10 +2,10 @@
  * SPDX-License-Identifier: LGPL-3.0-only.
  * @file ArrarList.ipp
  * @author Yurilt (yurilt15312@outlook.com)
- * @brief 这是LiyStd库的一部分,遵循 LGPLv3协议. 
+ * @brief 顺序表模板类的具体实现。
  * @version 0.1
  * @date 2025-06-06
- * 
+ * @note 这是LiyStd库的一部分,遵循 LGPLv3协议. 
  * @copyright Copyright (c) 2025, Yurilt.
  * 
  */
@@ -232,7 +232,7 @@ bool LiyStd::ArrayListVirtual<T>::push_front(const T &theElement) noexcept {
  * @brief 清除顺序表内容
  */
 template<typename T>
-void LiyStd::ArrayListVirtual<T>::clear() {
+void LiyStd::ArrayListVirtual<T>::clear() noexcept {
     length = 0;
     elements = nullptr;
 }
@@ -272,5 +272,14 @@ LiyStd::ArrayListVirtual<T>& LiyStd::ArrayListVirtual<T>::operator=(const ArrayL
         std::memcpy(elements, other.elements, sizeof(T) * length);}
     return *this;
 }
+/**
+ * @brief 重载访问运算符
+ * @param index 索引
+ * @return T& 数组元素引用
+ */
+template<typename T>
+inline T& LiyStd::ArrayListVirtual<T>::operator[](const LiyIndexType index) {
+    return at(index);
+} 
 
 #endif       //LIY_ARRAY_LIST_IPP

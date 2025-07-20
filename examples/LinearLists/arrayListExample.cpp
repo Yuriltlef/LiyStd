@@ -10,22 +10,24 @@
  *
  */
 #include "ArrayList.hpp"
+#include "liyTraits.hpp"
 #include <chrono>
-
+#include "LinkedList.hpp"
 
 int main() {
     SET_UTF8();
     using namespace std::chrono;
     using namespace LiyStd;
     using namespace std;
-    constexpr LiySizeType cap = 10000;
+    constexpr LiySizeType cap = 10;
+    static_assert(isArithmetic_v<int>, "hello");
 
     ArrayListVirtual<LiySizeType> list1(cap);
     auto startTime = high_resolution_clock::now();
 
     for (LiySizeType i = 0; i < cap; ++i) {
-        if (!list1.push_front(i)) {
-            cout << i << "插入失败\n";
+        if (!list1.push_back(i)) {
+            cout << i << u8"插入失败\n";
             std::string chs;
             cin >> chs;
             return 0;
@@ -44,4 +46,16 @@ int main() {
     list3 = list4 = list2;
     endTime = high_resolution_clock::now();
     cout << u8"复制" << cap << u8"元素用时：" << duration_cast<microseconds>(endTime - startTime).count() << u8"us\n";
+
+    for (auto i = 0; i < list3.size(); ++i) {
+        list3[i] += 9;
+    }
+    list1.display();
+    list2.display();
+    list3.display();
+    list4.display();
+
+    SinglyListVirtual<LiySizeType> list5(list4);
+    list5.print(cout);
+
 }

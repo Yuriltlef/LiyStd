@@ -1,6 +1,6 @@
 ﻿/**
  * SPDX-License-Identifier: LGPL-3.0-only.
- * @file ArrayListVirtual.hpp
+ * @file ArrayList.hpp
  * @author Yurilt (yurilt15312@outlook.com)
  * @brief 这是LiyStd库的一部分,遵循 LGPLv3协议. 
  * @version 0.1
@@ -114,7 +114,7 @@ namespace LiyStd {
         /**
          * @brief 清除顺序表内容
          */
-        void clear();
+        void clear() noexcept;
 
         /**
          * @brief 将顺序表内容可视化输出到输出流
@@ -138,7 +138,15 @@ namespace LiyStd {
          * @param other 复制源
          * @return ArrayListVirtual& 当前对象的引用
          */
-        ArrayListVirtual& operator=(const ArrayListVirtual &other) noexcept;
+        __attribute__((always_inline))
+        inline ArrayListVirtual& operator=(const ArrayListVirtual &other) noexcept;
+
+        /**
+         * @brief 重载访问运算符
+         * @param index 索引
+         * @return T& 数组元素引用
+         */
+        inline T& operator[](LiyIndexType index);
 
     private:
         /**
