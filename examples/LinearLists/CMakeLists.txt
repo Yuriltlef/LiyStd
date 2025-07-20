@@ -6,7 +6,11 @@ if (MSVC)
 	target_compile_options(arrayListExample PRIVATE 
 				"/Zc:__cplusplus"
 				"/permissive-"
+                "/utf-8"
+				"/wd4819"
 	)
+else() 
+	target_compile_options(arrayListExample PRIVATE "-finput-charset=UTF-8" "-fexec-charset=UTF-8")
 endif()
 
 message(${LIY_COMMON_SOURCES})
