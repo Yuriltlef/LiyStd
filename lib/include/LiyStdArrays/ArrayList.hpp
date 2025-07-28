@@ -138,7 +138,9 @@ namespace LiyStd {
          * @param other 复制源
          * @return ArrayListVirtual& 当前对象的引用
          */
+#ifdef __GNUC__
         __attribute__((always_inline))
+#endif
         inline ArrayListVirtual& operator=(const ArrayListVirtual &other) noexcept;
 
         /**
