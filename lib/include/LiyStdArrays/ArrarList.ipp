@@ -178,6 +178,8 @@ bool LiyStd::ArrayListVirtual<T>::remove(const LiyIndexType theIndex) noexcept {
  */
 template<typename T>
 bool LiyStd::ArrayListVirtual<T>::insert(const LiyIndexType theIndex, const T &theElement) noexcept {
+    /* 非负 */
+    if (theIndex < 0) return false;
     /* 超过表长则插入失败 */
     if (length + 1 > capacity) return false;
     /* 插入位置不合法 */
@@ -268,7 +270,8 @@ LiyStd::ArrayListVirtual<T>& LiyStd::ArrayListVirtual<T>::operator=(const ArrayL
         capacity = other.capacity;
         length = other.length;
         elements = new T[length];
-        std::memcpy(elements, other.elements, sizeof(T) * length);}
+        std::memcpy(elements, other.elements, sizeof(T) * length);
+    }
     return *this;
 }
 /**

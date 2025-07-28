@@ -156,7 +156,7 @@ namespace LiyStd {
         * @tparam T 模板参数
         * @param theIndex 引索
         */
-        void checkIndex(LiyIndexType theIndex) const;
+        inline void checkIndex(LiyIndexType theIndex) const;
 
         T* elements {nullptr};    //存储元素的一维数组
         LiySizeType capacity {};  //顺序表容量

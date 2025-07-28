@@ -19,7 +19,6 @@
 
 int main() {
     SET_UTF8();
-    using namespace std::chrono;
     using namespace LiyStd;
     using namespace std;
     constexpr LiySizeType cap = 1000000;
@@ -66,6 +65,7 @@ int main() {
         }
         , u8"清空"
     );
+    list1[0] = 9;
     SinglyListVirtual<LiySizeType> linkedList1(list1);
     linkedList1.print(cout);
 }

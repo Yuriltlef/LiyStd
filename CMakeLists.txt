@@ -56,12 +56,13 @@ add_subdirectory(tests/Graphs)
 add_subdirectory(tests/Sets)
 
 #编码兼容utf8
-if(MSVC)
-    add_compile_options("/utf-8")
-    add_compile_options("/execution-charset:utf-8")
-    add_compile_options("/source-charset:utf-8")
-    add_compile_options("/Zc:__cplusplus")
-    add_compile_options("/wd4819")
-else()
-    add_compile_options("-finput-charset=UTF-8" "-fexec-charset=UTF-8")
+if (MSVC)
+	target_compile_options(liy_common_sources PRIVATE 
+				"/Zc:__cplusplus"
+				"/permissive-"
+                "/utf-8"
+				"/wd4819"
+	)
+else() 
+	target_compile_options(liy_common_sources PRIVATE "-finput-charset=UTF-8" "-fexec-charset=UTF-8")
 endif()
