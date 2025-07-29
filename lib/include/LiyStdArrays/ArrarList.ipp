@@ -58,8 +58,13 @@ LiyStd::ArrayListVirtual<T>::ArrayListVirtual(const T *theElements, const LiySiz
  * @param other 要复制的对象。
  */
 template<typename T>
-LiyStd::ArrayListVirtual<T>::ArrayListVirtual(const ArrayListVirtual &other) : elements(new T[other.capacity]), length(other.length) {
-    std::memcpy(elements, &other.at(0), other.size() * sizeof(T));
+LiyStd::ArrayListVirtual<T>::ArrayListVirtual(const ArrayListVirtual& other) : capacity(other.capacity), length(other.length) {
+    if (capacity == 0) {
+        elements = nullptr;
+        return;
+    }
+    elements = new T[capacity];
+    for (LiySizeType i = 0; i < length; ++i) elements[i] = other.elements[i];
 }
 
 /**
@@ -266,10 +271,12 @@ void LiyStd::ArrayListVirtual<T>::display() const {
 template<typename T>
 LiyStd::ArrayListVirtual<T>& LiyStd::ArrayListVirtual<T>::operator=(const ArrayListVirtual& other) noexcept {
     if (this != &other) {
-        capacity = other.capacity;
-        length = other.length;
-        elements = new T[length];
-        std::memcpy(elements, other.elements, sizeof(T) * length);
+        using std::swap;
+        /* 临时副本 */
+        ArrayListVirtual temp(other);
+        swap(this->capacity, temp.capacity);
+        swap(this->length, temp.length);
+        swap(this->elements, temp.elements);
     }
     return *this;
 }

@@ -13,11 +13,35 @@
 #include "liyConfing.hpp"
 #include "liyTraits.hpp"
 #include "LinkedList.hpp"
+#include "liyUtil.hpp"
 #include <memory>
 
 int main() {
     SET_UTF8();
     using namespace LiyStd;
     using namespace std;
-    
+    constexpr int cap = 10;
+    int a[cap]{};
+    ArrayListVirtual<ArrayListVirtual<ArrayListVirtual<int>>> list(cap);
+    for (auto i : a) {
+        ArrayListVirtual<ArrayListVirtual<int>> x(cap);
+        for (auto j : a) {
+            ArrayListVirtual<int> y(cap);
+            for (auto k : a) {
+                y.pushBack(0);
+            }
+            x.pushBack(y);
+        }
+        list.pushBack(x);
+    }
+    list.display();
+
+    ArrayListVirtual<LiySizeType> l(10000000);
+    liySpeedTest(
+        10000000, 
+        [&l]() {
+            for (auto i = 0; i < 10000000; ++i) l.pushBack(i);
+        },
+        "插入"
+    );
 }

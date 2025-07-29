@@ -166,7 +166,7 @@ namespace LiyStd {
 
         /**
          * @brief 将顺序表输出到输出流
-         * @return true 线性表为空
+         * @return out 输出流
          */
         friend std::ostream& operator<<(std::ostream& out, const LiyStd::ArrayListVirtual<T>& array) {
             array.print(out);
