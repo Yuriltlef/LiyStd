@@ -18,6 +18,7 @@
 #include <cstring>
 #include <iostream>
 #include <cstdint>
+#include <iterator>
 
 #include "liyConfing.hpp"
 #include "ArrayList.hpp"    //for clangd
@@ -244,9 +245,9 @@ void LiyStd::ArrayListVirtual<T>::clear() noexcept {
  */
 template<typename T>
 void LiyStd::ArrayListVirtual<T>::print(std::ostream &out) const {
-    for (LiyIndexType i = 0; i < length; ++i) {
-        out << elements[i] << ' ';
-    }
+    out << "{";
+    std::copy(elements, elements + (length - 1), std::ostream_iterator<T>(out, ","));
+    out << elements[length - 1] << "}";
 }
 
 /**
@@ -254,9 +255,7 @@ void LiyStd::ArrayListVirtual<T>::print(std::ostream &out) const {
  */
 template<typename T>
 void LiyStd::ArrayListVirtual<T>::display() const {
-    std::cout << "{ ";
-    print(std::cout);
-    std::cout << "}\n";
+    std::cout << *this << '\n';
 }
 
 /**
@@ -283,5 +282,29 @@ template<typename T>
 inline T& LiyStd::ArrayListVirtual<T>::operator[](const LiyIndexType index) {
     return at(index);
 } 
+
+/**
+ * @brief 判断顺序表是否相等.
+ * @return true 线性表为空
+ * @return false 线性表不为空
+ */
+template<typename T>
+bool LiyStd::ArrayListVirtual<T>::operator==(const LinearList<T> &other) noexcept {
+    if (length != other.size()) return false;
+    for (LiyIndexType i = 0; i < length; ++i) {
+        if (elements[i] != other.at(i)) return false;
+    }
+    return true;
+}
+
+/**
+ * @brief 判断顺序表是否不相等.
+ * @return true 线性表为空
+ * @return false 线性表不为空
+ */
+template<typename T>
+bool LiyStd::ArrayListVirtual<T>::operator!=(const LinearList<T> &other) noexcept {
+    return !(*this == other);
+}
 
 #endif       //LIY_ARRAY_LIST_IPP
