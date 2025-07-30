@@ -19,6 +19,7 @@
 #include <iostream>
 #include <cstdint>
 #include <iterator>
+#include <cassert>
 
 #include "liyConfing.hpp"
 #include "ArrayList.hpp"    //for clangd
@@ -47,8 +48,11 @@ LiyStd::ArrayListVirtual<T>::ArrayListVirtual(const LiySizeType _capacity) : cap
  */
 template<typename T>
 LiyStd::ArrayListVirtual<T>::ArrayListVirtual(const T *theElements, const LiySizeType _length, const LiySizeType _capacity) :capacity(_capacity), length(_length) {
+    /* 默认新的容量为_length */
     if (_capacity == 0) capacity = _length;
+    /* 非法参数 */
     if (length > capacity) throw std::invalid_argument("capacity must > length.");
+
     elements = new T[capacity];
     std::memcpy(elements, theElements, length * sizeof(T));
 }
@@ -59,11 +63,16 @@ LiyStd::ArrayListVirtual<T>::ArrayListVirtual(const T *theElements, const LiySiz
  */
 template<typename T>
 LiyStd::ArrayListVirtual<T>::ArrayListVirtual(const ArrayListVirtual& other) : capacity(other.capacity), length(other.length) {
-    if (capacity == 0) {
-        elements = nullptr;
-        return;
+    /* 非法参数 */
+    if (length > capacity) {
+        throw std::invalid_argument("capacity must > length.");
     }
     elements = new T[capacity];
+    /* C6385 */
+    assert(length <= capacity);
+#if defined(_MSC_VER)
+    _Analysis_assume_(length <= capacity)
+#endif  //_MSC_VER
     for (LiySizeType i = 0; i < length; ++i) elements[i] = other.elements[i];
 }
 

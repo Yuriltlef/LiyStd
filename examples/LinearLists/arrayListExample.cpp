@@ -15,6 +15,7 @@
 #include "LinkedList.hpp"
 #include "liyUtil.hpp"
 #include <memory>
+#include <vector>
 
 int main() {
     SET_UTF8();
@@ -36,12 +37,23 @@ int main() {
     }
     list.display();
 
-    ArrayListVirtual<LiySizeType> l(10000000);
-    liySpeedTest(
-        10000000, 
+    constexpr LiySizeType cp = 60000;
+    ArrayListVirtual<string> l(cp);
+    vector<string> k;
+    k.reserve(cp);
+    LiyStd::liySpeedTest(
+        cp, 
         [&l]() {
-            for (auto i = 0; i < 10000000; ++i) l.pushBack(i);
+            for (LiySizeType i = 0; i < cp; ++i) l.pushBack(std::move("hello"));
         },
         "插入"
     );
+    LiyStd::liySpeedTest(
+        cp,
+        [&k]() {
+            for (LiySizeType i = 0; i < cp; ++i) k.push_back(std::move("hello"));
+        },
+        "插入"
+    );
+    std::cin >> new char[20];
 }
