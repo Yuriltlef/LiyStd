@@ -18,6 +18,8 @@
 #include <cstring>
 #include <iostream>
 #include <cstdint>
+#include <iterator>
+#include <cassert>
 
 #include "liyConfing.hpp"
 #include "ArrayList.hpp"    //for clangd
@@ -46,8 +48,11 @@ LiyStd::ArrayListVirtual<T>::ArrayListVirtual(const LiySizeType _capacity) : cap
  */
 template<typename T>
 LiyStd::ArrayListVirtual<T>::ArrayListVirtual(const T *theElements, const LiySizeType _length, const LiySizeType _capacity) :capacity(_capacity), length(_length) {
+    /* 默认新的容量为_length */
     if (_capacity == 0) capacity = _length;
+    /* 非法参数 */
     if (length > capacity) throw std::invalid_argument("capacity must > length.");
+
     elements = new T[capacity];
     std::memcpy(elements, theElements, length * sizeof(T));
 }
@@ -57,8 +62,18 @@ LiyStd::ArrayListVirtual<T>::ArrayListVirtual(const T *theElements, const LiySiz
  * @param other 要复制的对象。
  */
 template<typename T>
-LiyStd::ArrayListVirtual<T>::ArrayListVirtual(const ArrayListVirtual &other) : elements(new T[other.capacity]), length(other.length) {
-    std::memcpy(elements, &other.at(0), other.size() * sizeof(T));
+LiyStd::ArrayListVirtual<T>::ArrayListVirtual(const ArrayListVirtual& other) : capacity(other.capacity), length(other.length) {
+    /* 非法参数 */
+    if (length > capacity) {
+        throw std::invalid_argument("capacity must > length.");
+    }
+    elements = new T[capacity];
+    /* C6385 */
+    assert(length <= capacity);
+#if defined(_MSC_VER)
+    _Analysis_assume_(length <= capacity)
+#endif  //_MSC_VER
+    for (LiySizeType i = 0; i < length; ++i) elements[i] = other.elements[i];
 }
 
 /**
@@ -244,9 +259,9 @@ void LiyStd::ArrayListVirtual<T>::clear() noexcept {
  */
 template<typename T>
 void LiyStd::ArrayListVirtual<T>::print(std::ostream &out) const {
-    for (LiyIndexType i = 0; i < length; ++i) {
-        out << elements[i] << ' ';
-    }
+    out << "{";
+    std::copy(elements, elements + (length - 1), std::ostream_iterator<T>(out, ","));
+    out << elements[length - 1] << "}";
 }
 
 /**
@@ -254,9 +269,7 @@ void LiyStd::ArrayListVirtual<T>::print(std::ostream &out) const {
  */
 template<typename T>
 void LiyStd::ArrayListVirtual<T>::display() const {
-    std::cout << "{ ";
-    print(std::cout);
-    std::cout << "}\n";
+    std::cout << *this << '\n';
 }
 
 /**
@@ -267,10 +280,12 @@ void LiyStd::ArrayListVirtual<T>::display() const {
 template<typename T>
 LiyStd::ArrayListVirtual<T>& LiyStd::ArrayListVirtual<T>::operator=(const ArrayListVirtual& other) noexcept {
     if (this != &other) {
-        capacity = other.capacity;
-        length = other.length;
-        elements = new T[length];
-        std::memcpy(elements, other.elements, sizeof(T) * length);
+        using std::swap;
+        /* 临时副本 */
+        ArrayListVirtual temp(other);
+        swap(this->capacity, temp.capacity);
+        swap(this->length, temp.length);
+        swap(this->elements, temp.elements);
     }
     return *this;
 }
@@ -283,5 +298,29 @@ template<typename T>
 inline T& LiyStd::ArrayListVirtual<T>::operator[](const LiyIndexType index) {
     return at(index);
 } 
+
+/**
+ * @brief 判断顺序表是否相等.
+ * @return true 线性表为空
+ * @return false 线性表不为空
+ */
+template<typename T>
+bool LiyStd::ArrayListVirtual<T>::operator==(const LinearList<T> &other) noexcept {
+    if (length != other.size()) return false;
+    for (LiyIndexType i = 0; i < length; ++i) {
+        if (elements[i] != other.at(i)) return false;
+    }
+    return true;
+}
+
+/**
+ * @brief 判断顺序表是否不相等.
+ * @return true 线性表为空
+ * @return false 线性表不为空
+ */
+template<typename T>
+bool LiyStd::ArrayListVirtual<T>::operator!=(const LinearList<T> &other) noexcept {
+    return !(*this == other);
+}
 
 #endif       //LIY_ARRAY_LIST_IPP

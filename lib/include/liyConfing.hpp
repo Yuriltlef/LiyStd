@@ -21,6 +21,7 @@
 #endif //_MSVC_LANG
 #if defined(_MSC_VER)
     #include <cstddef>
+    #include <sal.h>
 #endif  //_MSC_VER
 #if AVAILABLE_CXX_LANG >= 201703L
     #define LI_NODISCARD [[nodiscard]]

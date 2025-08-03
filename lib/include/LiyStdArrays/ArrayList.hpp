@@ -150,6 +150,29 @@ namespace LiyStd {
          */
         inline T& operator[](LiyIndexType index);
 
+        /**
+         * @brief 判断顺序表是否相等.
+         * @return true 相等
+         * @return false 不相等
+         */
+        bool operator==(const LinearList<T> &other) noexcept;
+
+        /**
+         * @brief 判断顺序表是否不相等.
+         * @return true 不相等
+         * @return false 相等
+         */
+        bool operator!=(const LinearList<T> &other) noexcept;
+
+        /**
+         * @brief 将顺序表输出到输出流
+         * @return out 输出流
+         */
+        friend std::ostream& operator<<(std::ostream& out, const LiyStd::ArrayListVirtual<T>& array) {
+            array.print(out);
+            return out;
+        }
+
     private:
         /**
         * @brief 检查引索合法性，如果引索大于等于当前长度则引发OutOfRangeException异常
@@ -162,8 +185,6 @@ namespace LiyStd {
         LiySizeType capacity {};  //顺序表容量
         LiySizeType length {};    //顺序表长度
     };
-
-
 }
 
 /* 定义 */

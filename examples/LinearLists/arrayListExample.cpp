@@ -13,59 +13,47 @@
 #include "liyConfing.hpp"
 #include "liyTraits.hpp"
 #include "LinkedList.hpp"
-#include <errhandlingapi.h>
+#include "liyUtil.hpp"
 #include <memory>
-#include "liyTraits.hpp"
+#include <vector>
 
 int main() {
     SET_UTF8();
     using namespace LiyStd;
     using namespace std;
-    constexpr LiySizeType cap = 1000000;
-    static_assert(isArithmetic_v<int>, "hello");
-
-    ArrayListVirtual<LiySizeType> list1(cap);
-
-    liySpeedTest(cap, 
-    [&list1]() {
-            for (LiySizeType i = 0; i < cap; ++i) {
-                if (!list1.pushBack(i)) {
-                    cout << i << u8"插入失败\n";
-                    exit(1);
-                }
+    constexpr int cap = 10;
+    int a[cap]{};
+    ArrayListVirtual<ArrayListVirtual<ArrayListVirtual<int>>> list(cap);
+    for (auto i : a) {
+        ArrayListVirtual<ArrayListVirtual<int>> x(cap);
+        for (auto j : a) {
+            ArrayListVirtual<int> y(cap);
+            for (auto k : a) {
+                y.pushBack(0);
             }
+            x.pushBack(y);
         }
-        , u8"插入"
-    );
+        list.pushBack(x);
+    }
+    list.display();
 
-    ArrayListVirtual<LiySizeType> list2;
-    unique_ptr<ArrayListVirtual<LiySizeType>> list3;
-
-    liySpeedTest(
-        cap,
-        [&list1, &list2]() {
-            list2 = list1;
-        }
-        , u8"复制"
+    constexpr LiySizeType cp = 60000;
+    ArrayListVirtual<string> l(cp);
+    vector<string> k;
+    k.reserve(cp);
+    LiyStd::liySpeedTest(
+        cp, 
+        [&l]() {
+            for (LiySizeType i = 0; i < cp; ++i) l.pushBack(std::move("hello"));
+        },
+        "插入"
     );
-
-    liySpeedTest(
-        cap,
-        [&list2, &list3]() {
-            list3 = make_unique<ArrayListVirtual<LiySizeType>>(std::move(list2));
-        }
-        , u8"移动"
+    LiyStd::liySpeedTest(
+        cp,
+        [&k]() {
+            for (LiySizeType i = 0; i < cp; ++i) k.push_back(std::move("hello"));
+        },
+        "插入"
     );
-
-    liySpeedTest(
-        cap,
-        [&list1]() {
-            list1.clear();
-            list1.pushBack(20);
-        }
-        , u8"清空"
-    );
-    list1[0] = 9;
-    SinglyListVirtual<LiySizeType> linkedList1(list1);
-    linkedList1.print(cout);
+    std::cin >> new char[20];
 }
