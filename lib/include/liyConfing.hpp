@@ -25,15 +25,17 @@
 #if AVAILABLE_CXX_LANG >= 201703L
     #define LI_NODISCARD [[nodiscard]]
 #else
-#define LI_NODISCARD
-    #endif  //__cplusplus >= 201703L
+    #define LI_NODISCARD
+#endif  //__cplusplus >= 201703L
 #if defined(_WIN32)
     #include <Windows.h>
     /* utf-8 print should enable this */
     #define SET_UTF8() SetConsoleCP(CP_UTF8); SetConsoleOutputCP(CP_UTF8)
 #elif defined(__linux__) || defined(__APPLE__)
-#include <locale.h>
-#define SET_UTF8() setlocale(LC_ALL, "en_US.UTF-8")
+    #include <locale.h>
+    #define SET_UTF8() setlocale(LC_ALL, "en_US.UTF-8")
+#else
+   #define SET_UTF8()
 #endif    //UTF-8
 #if !defined(__GNUC__) && !defined(__clang__) && !defined(_MSC_VER) //是否支持编译器萃取
     #define LIY_COMPILER_IS_BASE_OF 0
