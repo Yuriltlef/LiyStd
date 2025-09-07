@@ -20,6 +20,13 @@
 
 
 namespace LiyStd {
+    /* 向前声明 */
+    template<typename T>
+    class ArrayListVirtual;
+
+    template<typename T>
+    std::ostream& operator<<(std::ostream& out, const LiyStd::ArrayListVirtual<T>& array);
+
     /**
      * @brief ArrayListVirtual:线性表的顺序表实现，使用的并不是静态分配而是动态分配，目的是提高利用率，不适合高安全的嵌入式系统。
      * @note  这是利用虚函数实现的顺序表，若需要高性能请见下面的策略模式实现。
@@ -168,11 +175,8 @@ namespace LiyStd {
          * @brief 将顺序表输出到输出流
          * @return out 输出流
          */
-        friend std::ostream& operator<<(std::ostream& out, const LiyStd::ArrayListVirtual<T>& array) {
-            array.print(out);
-            return out;
-        }
-
+        friend std::ostream& operator<< <T>(std::ostream& out, const LiyStd::ArrayListVirtual<T>& array);
+    
     private:
         /**
         * @brief 检查引索合法性，如果引索大于等于当前长度则引发OutOfRangeException异常

@@ -55,5 +55,10 @@ int main() {
         },
         "插入"
     );
-    std::cin >> new char[20];
+    const int&& x1 = 4;
+    using x = addLvalueReference_t<removeCV<removeReference<decltype(x1)>::type>::type>;
+    int a1;
+    x yp = list[0][0][0];
+    yp = x1;
+    
 }

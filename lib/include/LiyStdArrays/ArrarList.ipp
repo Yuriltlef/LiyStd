@@ -323,4 +323,14 @@ bool LiyStd::ArrayListVirtual<T>::operator!=(const LinearList<T> &other) noexcep
     return !(*this == other);
 }
 
+/**
+ * @brief 将顺序表输出到输出流
+ * @return out 输出流
+ */
+template<typename T>
+std::ostream& LiyStd::operator<<(std::ostream& out, const LiyStd::ArrayListVirtual<T>& array)  {
+    array.print(out);
+    return out;
+}
+
 #endif       //LIY_ARRAY_LIST_IPP
