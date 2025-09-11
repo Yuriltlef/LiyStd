@@ -90,8 +90,6 @@ namespace LiyStd {
          * @param out
          */
         virtual void print(std::ostream &out) const = 0;
-
-        static constexpr LiyIndexType npos = static_cast<LiyIndexType>(-1); // 无效引索
     };
 }
 #endif // LIY_LINEAR_LIST

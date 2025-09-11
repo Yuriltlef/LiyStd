@@ -42,5 +42,7 @@ namespace LiyStd {
         auto endTime = high_resolution_clock::now();
         cout << str << length << u8"元素" << u8"用时: " << duration_cast<microseconds>(endTime - startTime).count() << "us\n";
     }
+
+    constexpr LiyIndexType npos = static_cast<LiyIndexType>(-1); // 无效引索
 }
 #endif      //LIY_UTIL

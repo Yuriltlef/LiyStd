@@ -54,7 +54,8 @@ LiyStd::ArrayListVirtual<T>::ArrayListVirtual(const T *theElements, const LiySiz
     if (length > capacity) throw std::invalid_argument("capacity must > length.");
 
     elements = new T[capacity];
-    std::memcpy(elements, theElements, length * sizeof(T));
+    // std::memcpy(elements, theElements, length * sizeof(T));
+    for (LiyIndexType i = 0; i < length; i++) elements[i] = theElements[i];
 }
 
 /**
@@ -158,7 +159,7 @@ LiyStd::LiyIndexType LiyStd::ArrayListVirtual<T>::find(const T &theElement) cons
     for (LiyIndexType i = 0; i < length; ++i) {
         if (elements[i] == theElement) return i;
     }
-    return LinearList<T>::npos;
+    return npos;
 }
 
 /**
@@ -260,6 +261,11 @@ void LiyStd::ArrayListVirtual<T>::clear() noexcept {
 template<typename T>
 void LiyStd::ArrayListVirtual<T>::print(std::ostream &out) const {
     out << "{";
+    /* 0长度 */
+    if ( length == 0 ) {
+        out << "}";
+        return;
+    }
     std::copy(elements, elements + (length - 1), std::ostream_iterator<T>(out, ","));
     out << elements[length - 1] << "}";
 }
@@ -305,7 +311,7 @@ inline T& LiyStd::ArrayListVirtual<T>::operator[](const LiyIndexType index) {
  * @return false 线性表不为空
  */
 template<typename T>
-bool LiyStd::ArrayListVirtual<T>::operator==(const LinearList<T> &other) noexcept {
+bool LiyStd::ArrayListVirtual<T>::operator==(const LinearList<T> &other) const noexcept {
     if (length != other.size()) return false;
     for (LiyIndexType i = 0; i < length; ++i) {
         if (elements[i] != other.at(i)) return false;

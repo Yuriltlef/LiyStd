@@ -162,7 +162,7 @@ namespace LiyStd {
          * @return true 相等
          * @return false 不相等
          */
-        bool operator==(const LinearList<T> &other) noexcept;
+        bool operator==(const LinearList<T> &other) const noexcept;
 
         /**
          * @brief 判断顺序表是否不相等.
