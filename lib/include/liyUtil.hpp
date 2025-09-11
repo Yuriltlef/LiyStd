@@ -32,6 +32,14 @@ namespace LiyStd {
         std::string msg;
     };
 
+    /**
+     * @brief 简单的性能测试
+     * 例子： `liySpeedTest(10, (lamada), "删除");` 输出： `删除10元素用时xxxus`
+     * @tparam F 传入的可调用类型
+     * @param length 操作次数
+     * @param func 测试函数
+     * @param str 操作描述符
+     */
     template<typename F>
     void liySpeedTest(const LiyStd::LiySizeType length, F func, const std::string str = u8"") {
         using namespace std::chrono;
