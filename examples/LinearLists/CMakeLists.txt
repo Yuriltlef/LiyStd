@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.25)
 
 add_executable(arrayListExample "${CMAKE_CURRENT_SOURCE_DIR}/arrayListExample.cpp")
 
@@ -15,4 +15,5 @@ endif()
 
 message(${LIY_COMMON_SOURCES})
 
+# 链接到对象库和接口库
 target_link_libraries(arrayListExample PRIVATE $<TARGET_OBJECTS:liy_common_sources> "${LIY_COMMON_INCLUDES}")
