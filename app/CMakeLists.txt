@@ -10,13 +10,12 @@ target_sources(LiyStdApp PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src")
 
 if (MSVC)
 	target_compile_options(LiyStdApp PRIVATE 
-				"/Zc:__cplusplus"
-				"/permissive-"
-                "/utf-8"
-				"/wd4819"
+				${LIY_MSVC_COMPILE_OPTIONS}
 	)
 else() 
-	target_compile_options(LiyStdApp PRIVATE "-finput-charset=UTF-8" "-fexec-charset=UTF-8")
+	target_compile_options(LiyStdApp PRIVATE 
+				${LIY_GUN_COMPILE_OPTIONS}
+	)
 endif()
 
 

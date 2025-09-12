@@ -12,9 +12,9 @@
 
 /* includes-------------------------------------------- */
 #include <iostream>
-#include "LinearList.hpp"
+#include "liyUtil.hpp"
 /* ---------------------------------------------------- */
 
 int main() {
-    std::cout << (long) LiyStd::LinearList<int>::npos;
+    std::cout << (long) LiyStd::npos;
 }

@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.25)
 
 ###打印当前版本
-message("Now cmake version is " ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION})
+message("[project] Now cmake version is " ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION})
 ###限制版本范围
 if(${CMAKE_VERSION} VERSION_LESS 3.25)
     cmake_policy(VERSION ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION})
@@ -60,17 +60,33 @@ add_subdirectory(examples/Graphs)
 add_subdirectory(examples/Sets)
 add_subdirectory(examples/Trees)
 
+set(
+    LIY_MSVC_COMPILE_OPTIONS
+    "/Zc:__cplusplus"
+    "/permissive-"
+    "/utf-8"
+    "/wd4819"
+)
+
+set(
+    LIY_GUN_COMPILE_OPTIONS
+    "-finput-charset=UTF-8" 
+    "-fexec-charset=UTF-8"
+)
+
+
 #编码兼容utf8
 if (MSVC)
 	target_compile_options(liy_common_sources PRIVATE 
-				"/Zc:__cplusplus"
-				"/permissive-"
-                "/utf-8"
-				"/wd4819"
+				${LIY_MSVC_COMPILE_OPTIONS}
 	)
 else() 
-	target_compile_options(liy_common_sources PRIVATE "-finput-charset=UTF-8" "-fexec-charset=UTF-8")
+	target_compile_options(liy_common_sources PRIVATE 
+                ${LIY_GUN_COMPILE_OPTIONS}
+    )
 endif()
+
+
 
 # 测试支持
 enable_testing()
@@ -82,7 +98,15 @@ FetchContent_Declare(
     GIT_REPOSITORY https://github.com/doctest/doctest.git
     GIT_TAG v2.4.12
 )
+message("[project] add libraries: doctest.")
 FetchContent_MakeAvailable(doctest)
+message("[project] doctest is available.")
+
+option(BUILD_TESTS "All tests." ON)
+if(BUILD_TESTS)
+    add_subdirectory(tests)
+    message("[project] All tests is now loaded.")
+endif()
 
 # 测试开关
 

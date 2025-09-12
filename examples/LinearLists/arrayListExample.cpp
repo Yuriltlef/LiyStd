@@ -32,7 +32,7 @@ int main() {
     list4.display();
     list2.display();
     auto list7 = list2;
-    list7.display();
+    list7.display(); 
     auto list8 = list4;
     list8.display();
     SinglyListVirtual<ArrayListVirtual<SinglyListVirtual<int>>> list10{};
