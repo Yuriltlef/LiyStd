@@ -17,15 +17,7 @@ target_link_libraries(
 	"${LIY_COMMON_INCLUDES}"
     )
 
-if (MSVC)
-	target_compile_options(arraryListClass_test PRIVATE 
-				${LIY_MSVC_COMPILE_OPTIONS}
-	)
-else() 
-	target_compile_options(arraryListClass_test PRIVATE 
-				${LIY_GUN_COMPILE_OPTIONS}
-	)
-endif()
+liy_set_compile_options(arraryListClass_test)
 
 message(
     "[project] add test: arraryListClassTest. src: arraryListClass_test" 
@@ -48,15 +40,7 @@ target_link_libraries(
 	"${LIY_COMMON_INCLUDES}"
     )
 
-if (MSVC)
-	target_compile_options(linkedListClass_test PRIVATE 
-				${LIY_MSVC_COMPILE_OPTIONS}
-	)
-else() 
-	target_compile_options(linkedListClass_test PRIVATE 
-				${LIY_GUN_COMPILE_OPTIONS}
-	)
-endif()
+liy_set_compile_options(linkedListClass_test)
 
 message(
     "[project] add test: linkedListClassTest. src: linkedListClass_test" 
@@ -79,15 +63,7 @@ target_link_libraries(
 	"${LIY_COMMON_INCLUDES}"
     )
 
-if (MSVC)
-	target_compile_options(arrayAllClass_test PRIVATE 
-				${LIY_MSVC_COMPILE_OPTIONS}
-	)
-else() 
-	target_compile_options(arrayAllClass_test PRIVATE 
-				${LIY_GUN_COMPILE_OPTIONS}
-	)
-endif()
+liy_set_compile_options(arrayAllClass_test)
 
 message(
     "[project] add test: arraysAllClassTest. src: arrayAllClass_test" 

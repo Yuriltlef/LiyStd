@@ -8,16 +8,7 @@ target_include_directories(liy_arrays PRIVATE
     "${liy_lib_includes}"
 )
 
-if (MSVC)
-	target_compile_options(liy_arrays PRIVATE 
-				"/Zc:__cplusplus"
-				"/permissive-"
-                "/utf-8"
-				"/wd4819"
-	)
-else() 
-	target_compile_options(liy_arrays PRIVATE "-finput-charset=UTF-8" "-fexec-charset=UTF-8")
-endif()
+liy_set_compile_options(liy_arrays)
 
 
 set_target_properties(

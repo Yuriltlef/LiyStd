@@ -22,6 +22,8 @@ target_link_libraries(
 	"${LIY_COMMON_INCLUDES}"
     )
 
+liy_set_compile_options(integretion_tests)
+
 add_test(NAME integrationTests COMMAND integretion_tests)
 message(
     "[project] add test: integrationTests. src: integretion_tests" 

@@ -52,6 +52,23 @@ target_include_directories(liy_common_sources PRIVATE ${liy_lib_includes})
 set(LIY_COMMON_INCLUDES liy_common_includes)
 set(LIY_COMMON_SOURCES liy_common_sources)
 
+# 定义宏来设置编译选项
+macro(liy_set_compile_options TARGET)
+    if(MSVC)
+        target_compile_options(${TARGET} PRIVATE
+            "/Zc:__cplusplus"
+            "/permissive-"
+            "/utf-8"
+            "/wd4819"
+        )
+    else()
+        target_compile_options(${TARGET} PRIVATE
+            "-finput-charset=UTF-8" 
+            "-fexec-charset=UTF-8"
+        )
+    endif()
+endmacro()
+
 #手动添加子模块
 add_subdirectory(app)
 add_subdirectory(lib)
@@ -74,19 +91,7 @@ set(
     "-fexec-charset=UTF-8"
 )
 
-
-#编码兼容utf8
-if (MSVC)
-	target_compile_options(liy_common_sources PRIVATE 
-				${LIY_MSVC_COMPILE_OPTIONS}
-	)
-else() 
-	target_compile_options(liy_common_sources PRIVATE 
-                ${LIY_GUN_COMPILE_OPTIONS}
-    )
-endif()
-
-
+liy_set_compile_options(liy_common_sources)
 
 # 测试支持
 enable_testing()
