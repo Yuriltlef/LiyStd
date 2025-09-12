@@ -15,7 +15,6 @@
 /* includes-------------------------------------------- */
 #include "LinearList.hpp"
 #include "liyConfing.hpp"
-#include "liyTraits.hpp"
 
 /* ---------------------------------------------------- */
 
@@ -199,6 +198,9 @@ class ArrayListVirtual : public LinearList<T> {
 
 /* 定义 */
 #include "ArrarList.ipp"
+#ifndef LIY_ARRAY_LIST_IPP
+static_assert(false, "no .ipp file included.");
+#endif
 
 extern template class LiyStd::ArrayListVirtual<int>;
 extern template class LiyStd::ArrayListVirtual<LiyStd::LiySizeType>;

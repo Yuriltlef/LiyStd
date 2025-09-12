@@ -375,5 +375,8 @@ class DoublyCircularListVirtual : public SinglyListVirtual<T> {};
 }; // namespace LiyStd
 
 #include "LinkedList.ipp"
+#ifndef LIY_LINKED_LIST_IPP
+static_assert(false, "no .ipp file included.");
+#endif
 
 #endif // LIY_LINKEDLIST
