@@ -15,7 +15,6 @@
 /* includes-------------------------------------------- */
 #include <sstream>
 #include <iomanip>
-#include <cstring>
 #include <iostream>
 #include <cstdint>
 #include <iterator>
@@ -325,7 +324,7 @@ bool LiyStd::ArrayListVirtual<T>::operator==(const LinearList<T> &other) const n
  * @return false 线性表不为空
  */
 template<typename T>
-bool LiyStd::ArrayListVirtual<T>::operator!=(const LinearList<T> &other) noexcept {
+bool LiyStd::ArrayListVirtual<T>::operator!=(const LinearList<T> &other) const noexcept {
     return !(*this == other);
 }
 

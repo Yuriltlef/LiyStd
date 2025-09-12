@@ -169,7 +169,7 @@ namespace LiyStd {
          * @return true 不相等
          * @return false 相等
          */
-        bool operator!=(const LinearList<T> &other) noexcept;
+        bool operator!=(const LinearList<T> &other) const noexcept;
 
         /**
          * @brief 将顺序表输出到输出流
