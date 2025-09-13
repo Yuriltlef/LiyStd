@@ -126,6 +126,7 @@ add_subdirectory(examples/Trees)
 
 # 测试支持
 enable_testing()
+include(CTest)
 
 # 导入Doctest
 include(FetchContent)
