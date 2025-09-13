@@ -26,10 +26,10 @@ namespace LiyStd
 template <typename T>
 SinglyListVirtual<T>::~SinglyListVirtual() {
     /* 保存上下文 */
-    SinglyNode<T> *currentNode = head->nextNode;
+    SinglyNode<T>* currentNode = head->nextNode;
     /* 删除所有元素 */
     while (currentNode != nullptr) {
-        SinglyNode<T> *nextNode = currentNode->nextNode;
+        SinglyNode<T>* nextNode = currentNode->nextNode;
         delete currentNode;
         /* 恢复上下文 */
         currentNode = nextNode;
@@ -46,17 +46,17 @@ SinglyListVirtual<T>::SinglyListVirtual() {
 }
 
 template <typename T>
-SinglyListVirtual<T>::SinglyListVirtual(SinglyNode<T> &_head) {
+SinglyListVirtual<T>::SinglyListVirtual(SinglyNode<T>& _head) {
     head           = new SinglyNode<T>{};
     head->nextNode = _head.nextNode;
     head->data     = _head.data;
 }
 
 template <typename T>
-SinglyListVirtual<T>::SinglyListVirtual(const LinearList<T> &array) {
+SinglyListVirtual<T>::SinglyListVirtual(const LinearList<T>& array) {
     head = new SinglyNode<T>{};
     /* 移动指针实现 */
-    SinglyNode<T> *currentNode = head;
+    SinglyNode<T>* currentNode = head;
     length                     = array.size();
     for (int i = 0; i < length; ++i) {
         /* 拷贝 */
@@ -66,16 +66,16 @@ SinglyListVirtual<T>::SinglyListVirtual(const LinearList<T> &array) {
 }
 
 template <typename T>
-SinglyListVirtual<T>::SinglyListVirtual(const SinglyListVirtual &array)
+SinglyListVirtual<T>::SinglyListVirtual(const SinglyListVirtual& array)
     : length(array.length) {
     head = new SinglyNode<T>{};
     /* `ptr`:当前链表指针 `sPtr`:源链表指针,指向复制数据地址 */
-    SinglyNode<T> *currentNode      = head;
-    const SinglyNode<T> *scoureNode = array.head->nextNode;
+    SinglyNode<T>* currentNode      = head;
+    const SinglyNode<T>* scoureNode = array.head->nextNode;
 
     while (scoureNode != nullptr) {
         /* 深拷贝，先分配储存空间 */
-        SinglyNode<T> *newNode = new SinglyNode<T>(scoureNode->data, scoureNode->nextNode);
+        SinglyNode<T>* newNode = new SinglyNode<T>(scoureNode->data, scoureNode->nextNode);
         currentNode->nextNode  = newNode;
         currentNode            = currentNode->nextNode;
         scoureNode             = scoureNode->nextNode;
@@ -84,10 +84,10 @@ SinglyListVirtual<T>::SinglyListVirtual(const SinglyListVirtual &array)
 
 // 必须重载<<
 template <typename T>
-void SinglyListVirtual<T>::print(std::ostream &out) const {
+void SinglyListVirtual<T>::print(std::ostream& out) const {
     out << "{";
     /* 辅助指针 */
-    SinglyNode<T> *currentNode = head->nextNode;
+    SinglyNode<T>* currentNode = head->nextNode;
     while (currentNode != nullptr) {
         out << currentNode->data;
         /* 去除最后一个分隔符,检测是不是最后一个元素，不是就加上分隔符 */
@@ -113,10 +113,10 @@ LiySizeType SinglyListVirtual<T>::size() const {
 }
 
 template <typename T>
-const T &SinglyListVirtual<T>::at(LiyIndexType theIndex) const {
+const T& SinglyListVirtual<T>::at(LiyIndexType theIndex) const {
     // 检查索引
     if (theIndex >= length || theIndex < 0) throw std::invalid_argument("out of scope.");
-    const SinglyNode<T> *currentNode = head;
+    const SinglyNode<T>* currentNode = head;
     LiyIndexType index               = npos;
     // 移动指针
     while (index != theIndex) {
@@ -127,10 +127,10 @@ const T &SinglyListVirtual<T>::at(LiyIndexType theIndex) const {
 }
 
 template <typename T>
-T &SinglyListVirtual<T>::at(LiyIndexType theIndex) {
+T& SinglyListVirtual<T>::at(LiyIndexType theIndex) {
     // 检查索引
     if (theIndex >= length || theIndex < 0) throw std::invalid_argument("out of scope.");
-    SinglyNode<T> *currentNode = head;
+    SinglyNode<T>* currentNode = head;
     LiyIndexType index         = npos;
     // 移动指针
     while (index != theIndex) {
@@ -141,8 +141,8 @@ T &SinglyListVirtual<T>::at(LiyIndexType theIndex) {
 }
 
 template <typename T>
-LiyIndexType SinglyListVirtual<T>::find(const T &theElement) const {
-    const SinglyNode<T> *currentNode = head;
+LiyIndexType SinglyListVirtual<T>::find(const T& theElement) const {
+    const SinglyNode<T>* currentNode = head;
     LiyIndexType index               = npos;
     while (currentNode != nullptr) {
         ++index;
@@ -159,7 +159,7 @@ bool SinglyListVirtual<T>::remove(LiyIndexType theIndex) noexcept {
     // 检查索引
     if (theIndex >= length || theIndex < 0) return false;
     // 被删除节点
-    SinglyNode<T> *removed = nullptr;
+    SinglyNode<T>* removed = nullptr;
     // 删除第零个
     if (theIndex == 0) {
         removed        = head->nextNode;
@@ -169,7 +169,7 @@ bool SinglyListVirtual<T>::remove(LiyIndexType theIndex) noexcept {
         return true;
     }
     // 顺序找到第 index-1 处
-    SinglyNode<T> *currentNode = head;
+    SinglyNode<T>* currentNode = head;
     LiyIndexType index         = npos;
     while (index != theIndex - 1) {
         ++index;
@@ -184,43 +184,43 @@ bool SinglyListVirtual<T>::remove(LiyIndexType theIndex) noexcept {
 }
 
 template <typename T>
-bool SinglyListVirtual<T>::insert(LiyIndexType theIndex, const T &theElement) noexcept {
+bool SinglyListVirtual<T>::insert(LiyIndexType theIndex, const T& theElement) noexcept {
     /* 检查索引 */
     if (theIndex > length || theIndex < 0) return false;
     /* 查找插入前一个节点 */
-    SinglyNode<T> *frontNode = head;
+    SinglyNode<T>* frontNode = head;
     /* index == 0情况也在里面 */
     LiyIndexType index = npos;
     while (index != theIndex - 1) {
         ++index;
         frontNode = frontNode->nextNode;
     }
-    SinglyNode<T> *newNode = new SinglyNode<T>(theElement, frontNode->nextNode);
+    SinglyNode<T>* newNode = new SinglyNode<T>(theElement, frontNode->nextNode);
     frontNode->nextNode    = newNode;
     ++length;
     return true;
 }
 
 template <typename T>
-bool SinglyListVirtual<T>::pushBack(const T &theElement) noexcept {
+bool SinglyListVirtual<T>::pushBack(const T& theElement) noexcept {
     return insert(0, theElement);
 }
 
 template <typename T>
-bool SinglyListVirtual<T>::pushFront(const T &theElement) noexcept {
+bool SinglyListVirtual<T>::pushFront(const T& theElement) noexcept {
     return insert(length, theElement);
 }
 
 template <typename T>
-SinglyListVirtual<T> &SinglyListVirtual<T>::operator=(const SinglyListVirtual &other) noexcept {
+SinglyListVirtual<T>& SinglyListVirtual<T>::operator=(const SinglyListVirtual& other) noexcept {
     /* 自赋值 */
     if (this == &other) return *this;
     /* 释放资源 */
-    SinglyNode<T> *currentNode = head->nextNode;
+    SinglyNode<T>* currentNode = head->nextNode;
     /* 删除所有元素 */
     while (currentNode != nullptr) {
         /* 保存上下文 */
-        SinglyNode<T> *next = currentNode->nextNode;
+        SinglyNode<T>* next = currentNode->nextNode;
         delete currentNode;
         /* 恢复上下文 */
         currentNode = next;
@@ -231,10 +231,10 @@ SinglyListVirtual<T> &SinglyListVirtual<T>::operator=(const SinglyListVirtual &o
     length = other.length;
     /* 辅助指针 */
     currentNode                     = head;
-    const SinglyNode<T> *sourceNode = other.head->nextNode;
+    const SinglyNode<T>* sourceNode = other.head->nextNode;
     /* 深拷贝 */
     while (sourceNode != nullptr) {
-        SinglyNode<T> *newNode = new SinglyNode<T>(sourceNode->data, sourceNode->nextNode);
+        SinglyNode<T>* newNode = new SinglyNode<T>(sourceNode->data, sourceNode->nextNode);
         currentNode->nextNode  = newNode;
 
         currentNode            = currentNode->nextNode;
@@ -244,17 +244,17 @@ SinglyListVirtual<T> &SinglyListVirtual<T>::operator=(const SinglyListVirtual &o
 }
 
 template <typename T>
-T &SinglyListVirtual<T>::operator[](LiyIndexType index) {
+T& SinglyListVirtual<T>::operator[](LiyIndexType index) {
     /* 时间复杂度O(n)! */
     return at(index);
 }
 
 template <typename T>
-bool SinglyListVirtual<T>::operator==(const SinglyListVirtual<T> &other) const noexcept {
+bool SinglyListVirtual<T>::operator==(const SinglyListVirtual<T>& other) const noexcept {
     if (length != other.length) return false;
     /* 辅助指针 */
-    const SinglyNode<T> *currentNode = head->nextNode;
-    const SinglyNode<T> *otherNode   = other.head->nextNode;
+    const SinglyNode<T>* currentNode = head->nextNode;
+    const SinglyNode<T>* otherNode   = other.head->nextNode;
     /* 遍历每一个元素 */
     while (currentNode != nullptr) {
         if (currentNode->data != otherNode->data) return false;
@@ -265,12 +265,12 @@ bool SinglyListVirtual<T>::operator==(const SinglyListVirtual<T> &other) const n
 }
 
 template <typename T>
-bool SinglyListVirtual<T>::operator!=(const SinglyListVirtual<T> &other) const noexcept {
+bool SinglyListVirtual<T>::operator!=(const SinglyListVirtual<T>& other) const noexcept {
     return !(*this == other);
 }
 
 template <typename T>
-std::ostream &operator<<(std::ostream &out, const SinglyListVirtual<T> &array) {
+std::ostream& operator<<(std::ostream& out, const SinglyListVirtual<T>& array) {
     array.print(out);
     return out;
 }
@@ -282,10 +282,10 @@ using SCListVAlias = SinglyCircularListVirtual<T>;
 template <typename T>
 SinglyCircularListVirtual<T>::~SinglyCircularListVirtual() {
     /* 保存上下文 */
-    SinglyNode<T> *currentNode = head->nextNode;
+    SinglyNode<T>* currentNode = head->nextNode;
     /* 删除所有元素 */
     while (currentNode != head) {
-        SinglyNode<T> *nextNode = currentNode->nextNode;
+        SinglyNode<T>* nextNode = currentNode->nextNode;
         delete currentNode;
         /* 恢复上下文 */
         currentNode = nextNode;
@@ -306,16 +306,16 @@ SinglyCircularListVirtual<T>::SinglyCircularListVirtual()
 }
 
 template <typename T>
-SinglyCircularListVirtual<T>::SinglyCircularListVirtual(SinglyNode<T> &_head) {
+SinglyCircularListVirtual<T>::SinglyCircularListVirtual(SinglyNode<T>& _head) {
     head->data     = _head.data;
     head->nextNode = _head.nextNode;
 }
 
 template <typename T>
-SinglyCircularListVirtual<T>::SinglyCircularListVirtual(const LinearList<T> &array) {
+SinglyCircularListVirtual<T>::SinglyCircularListVirtual(const LinearList<T>& array) {
     head = new SinglyNode<T>{};
     /* 移动指针实现 */
-    SinglyNode<T> *currentNode = head;
+    SinglyNode<T>* currentNode = head;
     length                     = array.size();
     for (int i = 0; i < length; ++i) {
         /* 拷贝 */
@@ -327,16 +327,16 @@ SinglyCircularListVirtual<T>::SinglyCircularListVirtual(const LinearList<T> &arr
 }
 
 template <typename T>
-SinglyCircularListVirtual<T>::SinglyCircularListVirtual(const SCListVAlias<T> &array)
+SinglyCircularListVirtual<T>::SinglyCircularListVirtual(const SCListVAlias<T>& array)
     : length(array.length) {
     head = new SinglyNode<T>{};
     /* `ptr`:当前链表指针 `sPtr`:源链表指针,指向复制数据地址 */
-    SinglyNode<T> *currentNode      = head;
-    const SinglyNode<T> *scoureNode = array.head->nextNode;
+    SinglyNode<T>* currentNode      = head;
+    const SinglyNode<T>* scoureNode = array.head->nextNode;
     /* 哨兵 */
     while (scoureNode != array.head) {
         /* 深拷贝，先分配储存空间 */
-        SinglyNode<T> *newNode = new SinglyNode<T>(scoureNode->data, scoureNode->nextNode);
+        SinglyNode<T>* newNode = new SinglyNode<T>(scoureNode->data, scoureNode->nextNode);
         currentNode->nextNode  = newNode;
         currentNode            = currentNode->nextNode;
         scoureNode             = scoureNode->nextNode;
@@ -347,10 +347,10 @@ SinglyCircularListVirtual<T>::SinglyCircularListVirtual(const SCListVAlias<T> &a
 
 // 必须重载<<
 template <typename T>
-void SinglyCircularListVirtual<T>::print(std::ostream &out) const {
+void SinglyCircularListVirtual<T>::print(std::ostream& out) const {
     out << "{";
     /* 辅助指针 */
-    SinglyNode<T> *currentNode = head->nextNode;
+    SinglyNode<T>* currentNode = head->nextNode;
     while (currentNode != head) {
         out << currentNode->data;
         /* 去除最后一个分隔符,检测是不是最后一个元素，不是就加上分隔符 */
@@ -376,10 +376,10 @@ LiySizeType SinglyCircularListVirtual<T>::size() const {
 }
 
 template <typename T>
-const T &SinglyCircularListVirtual<T>::at(LiyIndexType theIndex) const {
+const T& SinglyCircularListVirtual<T>::at(LiyIndexType theIndex) const {
     // 检查索引
     if (theIndex >= length || theIndex < 0) throw std::invalid_argument("out of scope.");
-    const SinglyNode<T> *currentNode = head;
+    const SinglyNode<T>* currentNode = head;
     LiyIndexType index               = npos;
     // 移动指针
     while (index != theIndex) {
@@ -390,10 +390,10 @@ const T &SinglyCircularListVirtual<T>::at(LiyIndexType theIndex) const {
 }
 
 template <typename T>
-T &SinglyCircularListVirtual<T>::at(LiyIndexType theIndex) {
+T& SinglyCircularListVirtual<T>::at(LiyIndexType theIndex) {
     /* 检查索引 */
     if (theIndex >= length || theIndex < 0) throw std::invalid_argument("out of scope.");
-    SinglyNode<T> *currentNode = head;
+    SinglyNode<T>* currentNode = head;
     LiyIndexType index         = npos;
     /* 移动指针 */
     while (index != theIndex) {
@@ -404,8 +404,8 @@ T &SinglyCircularListVirtual<T>::at(LiyIndexType theIndex) {
 }
 
 template <typename T>
-LiyIndexType SinglyCircularListVirtual<T>::find(const T &theElement) const {
-    const SinglyNode<T> *currentNode = head->nextNode;
+LiyIndexType SinglyCircularListVirtual<T>::find(const T& theElement) const {
+    const SinglyNode<T>* currentNode = head->nextNode;
     LiyIndexType index               = 0;
     /* 副本 */
     head->data = theElement;
@@ -423,7 +423,7 @@ bool SinglyCircularListVirtual<T>::remove(LiyIndexType theIndex) noexcept {
     /* 检查索引 */
     if (theIndex >= length || theIndex < 0) return false;
     /* 被删除节点 */
-    SinglyNode<T> *removed = nullptr;
+    SinglyNode<T>* removed = nullptr;
     /* 删除第零个 */
     if (theIndex == 0) {
         removed        = head->nextNode;
@@ -433,7 +433,7 @@ bool SinglyCircularListVirtual<T>::remove(LiyIndexType theIndex) noexcept {
         return true;
     }
     /* 顺序找到第 index-1 处 */
-    SinglyNode<T> *currentNode = head;
+    SinglyNode<T>* currentNode = head;
     LiyIndexType index         = npos;
     while (index != theIndex - 1) {
         ++index;
@@ -449,43 +449,43 @@ bool SinglyCircularListVirtual<T>::remove(LiyIndexType theIndex) noexcept {
 }
 
 template <typename T>
-bool SinglyCircularListVirtual<T>::insert(LiyIndexType theIndex, const T &theElement) noexcept {
+bool SinglyCircularListVirtual<T>::insert(LiyIndexType theIndex, const T& theElement) noexcept {
     /* 检查索引 */
     if (theIndex > length || theIndex < 0) return false;
     /* 查找插入点的前驱 */
-    SinglyNode<T> *frontNode = head;
+    SinglyNode<T>* frontNode = head;
     /* index == 0情况也在里面 */
     LiyIndexType index = npos;
     while (index != theIndex - 1) {
         ++index;
         frontNode = frontNode->nextNode;
     }
-    SinglyNode<T> *newNode = new SinglyNode<T>(theElement, frontNode->nextNode);
+    SinglyNode<T>* newNode = new SinglyNode<T>(theElement, frontNode->nextNode);
     frontNode->nextNode    = newNode;
     ++length;
     return true;
 }
 
 template <typename T>
-bool SinglyCircularListVirtual<T>::pushBack(const T &theElement) noexcept {
+bool SinglyCircularListVirtual<T>::pushBack(const T& theElement) noexcept {
     return insert(0, theElement);
 }
 
 template <typename T>
-bool SinglyCircularListVirtual<T>::pushFront(const T &theElement) noexcept {
+bool SinglyCircularListVirtual<T>::pushFront(const T& theElement) noexcept {
     return insert(length, theElement);
 }
 
 template <typename T>
-SinglyCircularListVirtual<T> &SinglyCircularListVirtual<T>::operator=(const SCListVAlias<T> &other) noexcept {
+SinglyCircularListVirtual<T>& SinglyCircularListVirtual<T>::operator=(const SCListVAlias<T>& other) noexcept {
     /* 自赋值 */
     if (this == &other) return *this;
     /* 释放资源 */
-    SinglyNode<T> *currentNode = head->nextNode;
+    SinglyNode<T>* currentNode = head->nextNode;
     /* 删除所有元素 */
     while (currentNode != head) {
         /* 保存上下文 */
-        SinglyNode<T> *next = currentNode->nextNode;
+        SinglyNode<T>* next = currentNode->nextNode;
         delete currentNode;
         /* 恢复上下文 */
         currentNode = next;
@@ -496,10 +496,10 @@ SinglyCircularListVirtual<T> &SinglyCircularListVirtual<T>::operator=(const SCLi
     length = other.length;
     /* 辅助指针 */
     currentNode                     = head;
-    const SinglyNode<T> *sourceNode = other.head->nextNode;
+    const SinglyNode<T>* sourceNode = other.head->nextNode;
     /* 深拷贝 */
     while (sourceNode != other.head) {
-        SinglyNode<T> *newNode = new SinglyNode<T>(sourceNode->data, sourceNode->nextNode);
+        SinglyNode<T>* newNode = new SinglyNode<T>(sourceNode->data, sourceNode->nextNode);
         currentNode->nextNode  = newNode;
         currentNode            = currentNode->nextNode;
         sourceNode             = sourceNode->nextNode;
@@ -510,17 +510,17 @@ SinglyCircularListVirtual<T> &SinglyCircularListVirtual<T>::operator=(const SCLi
 }
 
 template <typename T>
-T &SinglyCircularListVirtual<T>::operator[](LiyIndexType index) {
+T& SinglyCircularListVirtual<T>::operator[](LiyIndexType index) {
     /* 时间复杂度O(n)! */
     return at(index);
 }
 
 template <typename T>
-bool SinglyCircularListVirtual<T>::operator==(const SCListVAlias<T> &other) const noexcept {
+bool SinglyCircularListVirtual<T>::operator==(const SCListVAlias<T>& other) const noexcept {
     if (length != other.length) return false;
     /* 辅助指针 */
-    const SinglyNode<T> *currentNode = head->nextNode;
-    const SinglyNode<T> *otherNode   = other.head->nextNode;
+    const SinglyNode<T>* currentNode = head->nextNode;
+    const SinglyNode<T>* otherNode   = other.head->nextNode;
     /* 遍历每一个元素 */
     while (currentNode != head) {
         if (currentNode->data != otherNode->data) return false;
@@ -531,12 +531,12 @@ bool SinglyCircularListVirtual<T>::operator==(const SCListVAlias<T> &other) cons
 }
 
 template <typename T>
-bool SinglyCircularListVirtual<T>::operator!=(const SCListVAlias<T> &other) const noexcept {
+bool SinglyCircularListVirtual<T>::operator!=(const SCListVAlias<T>& other) const noexcept {
     return !(*this == other);
 }
 
 template <typename T>
-std::ostream &operator<<(std::ostream &out, const SCListVAlias<T> &array) {
+std::ostream& operator<<(std::ostream& out, const SCListVAlias<T>& array) {
     array.print(out);
     return out;
 }

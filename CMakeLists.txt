@@ -87,7 +87,7 @@ endfunction()
 
 # 输出提示：添加了测试目标
 function(liy_message_add_test_target TEST_NAME TARGET)
-    message("[project][test]add test: ${TEST_NAME}. src: ${TARGET}")
+    message("[project][test] add test: ${TEST_NAME}. src: ${TARGET}")
 endfunction()
 
 # 输出提示：添加了目标
