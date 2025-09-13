@@ -8,6 +8,7 @@
  * @copyright Copyright (c) 2025
  * 
  */
+// #define DOCTEST_CONFIG_COLORS_ANSI
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <string>
 #include "doctest/doctest.h"

@@ -10,9 +10,6 @@ target_sources(LiyStdApp PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src")
 
 liy_set_compile_options(LiyStdApp)
 
-set(Var)
-get_property(Var TARGET LiyStdApp PROPERTY CXX_STANDARD)
-
-message("[project] CXX standard of target LiyStdApp is ${Var}")
-
 install(TARGETS LiyStdApp DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin")
+
+liy_message_add_target(LiyStdApp EXE "${CMAKE_CURRENT_SOURCE_DIR}/main.cpp")

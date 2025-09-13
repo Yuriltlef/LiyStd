@@ -36,7 +36,7 @@ int main() {
     auto list8 = list4;
     list8.display();
     SinglyListVirtual<ArrayListVirtual<SinglyListVirtual<int>>> list10{};
-    auto list3 = list2;
+    SinglyListVirtual<int> list3 = list2;
     ArrayListVirtual<SinglyListVirtual<int>> list11(&list3, 1, 1);
     list10.pushFront(list11);
     list10.display();

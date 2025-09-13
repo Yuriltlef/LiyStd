@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 3.25)
 
 add_executable(arrayListExample "${CMAKE_CURRENT_SOURCE_DIR}/arrayListExample.cpp")
-message("[project] add executable: arrayListExample. src: " ${LIY_COMMON_SOURCES})
 
 liy_set_compile_options(arrayListExample)
 
@@ -11,3 +10,5 @@ target_link_libraries(
 	$<TARGET_OBJECTS:liy_common_sources> 
 	"${LIY_COMMON_INCLUDES}"
 	)
+
+liy_message_add_target(arrayListExample EXE "${CMAKE_CURRENT_SOURCE_DIR}/arrayListExample.cpp")
